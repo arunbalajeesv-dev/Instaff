@@ -100,6 +100,19 @@
   .btn-loading::after{content:'';position:absolute;width:20px;height:20px;border:3px solid rgba(255,255,255,0.3);border-top-color:#FFF;border-radius:50%;animation:spin .6s linear infinite;top:50%;left:50%;margin:-10px 0 0 -10px}
   @keyframes spin{to{transform:rotate(360deg)}}
 
+  /* WORK EXPERIENCE */
+  .exp-entries{margin-bottom:8px}
+  .exp-entry{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:10px 12px;margin-bottom:6px;animation:fadeIn .2s ease}
+  .exp-entry-info{flex:1;min-width:0}
+  .exp-entry-role{font-size:13px;font-weight:600;color:var(--text)}
+  .exp-entry-period{font-size:11px;color:var(--dim)}
+  .exp-remove{width:28px;height:28px;border-radius:50%;border:none;background:none;color:var(--dim);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
+  .exp-remove:hover{background:var(--accent2-light);color:var(--accent2)}
+  .exp-add-row{display:flex;gap:6px}
+  .exp-add-row .field-input{font-size:13px;padding:10px 12px}
+  .exp-add-btn{width:42px;height:42px;border-radius:var(--rs);border:1px solid var(--accent);background:var(--accent-light);color:var(--accent);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;font-weight:700}
+  .exp-add-btn:hover{background:var(--accent);color:#fff}
+
   .success-screen{display:none;text-align:center;padding:50px 20px;animation:fadeIn .4s ease}
   .success-screen.active{display:block}
   .success-icon{width:72px;height:72px;border-radius:50%;background:var(--accent-light);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:32px}
@@ -217,7 +230,26 @@
   <div class="step" id="step3">
     <div class="step-label">Step 3 of 4</div>
     <div class="step-title">Experience & availability</div>
-    <div class="field"><label class="field-label">Experience in any selected roles</label><div class="toggle-row"><div class="toggle-opt" onclick="toggleSelect(this,'exp')">None</div><div class="toggle-opt" onclick="toggleSelect(this,'exp')">Under 1yr</div><div class="toggle-opt" onclick="toggleSelect(this,'exp')">1-3 yrs</div><div class="toggle-opt" onclick="toggleSelect(this,'exp')">3+ yrs</div></div></div>
+    <div class="field"><label class="field-label">Education <span class="req">*</span></label><div class="toggle-row"><div class="toggle-opt" onclick="toggleSelect(this,'edu')">10th</div><div class="toggle-opt" onclick="toggleSelect(this,'edu')">12th</div><div class="toggle-opt" onclick="toggleSelect(this,'edu')">Diploma</div><div class="toggle-opt" onclick="toggleSelect(this,'edu')">Degree</div></div></div>
+    <div class="field">
+      <label class="field-label">Work Experience</label>
+      <div class="hint" style="margin-bottom:8px">Add your past or current roles. You can add multiple.</div>
+      <div class="exp-entries" id="expEntries"></div>
+      <div class="exp-add-row">
+        <input type="text" class="field-input" id="expRole" placeholder="Role / workplace (e.g., Steward at Taj)">
+        <select class="field-input" id="expPeriod" style="width:130px;flex-shrink:0">
+          <option value="" disabled selected>Period</option>
+          <option>< 3 months</option>
+          <option>3-6 months</option>
+          <option>6-12 months</option>
+          <option>1-2 years</option>
+          <option>2-3 years</option>
+          <option>3-5 years</option>
+          <option>5+ years</option>
+        </select>
+        <button class="exp-add-btn" onclick="addExperience()" title="Add">+</button>
+      </div>
+    </div>
     <div class="field"><label class="field-label">Current situation <span class="req">*</span></label><div class="chip-grid" id="situationChips"><div class="chip" onclick="chipSingle(this,'situationChips')">Student</div><div class="chip" onclick="chipSingle(this,'situationChips')">Working full-time</div><div class="chip" onclick="chipSingle(this,'situationChips')">Working part-time</div><div class="chip" onclick="chipSingle(this,'situationChips')">Between jobs</div><div class="chip" onclick="chipSingle(this,'situationChips')">Freelancing / daily wage</div><div class="chip" onclick="chipSingle(this,'situationChips')">Homemaker</div></div></div>
     <div class="field"><label class="field-label">Current monthly income</label><select class="field-input" id="fincome"><option value="" disabled selected>Select range</option><option>No income currently</option><option>Below ₹8,000</option><option>₹8,000 - ₹15,000</option><option>₹15,000 - ₹25,000</option><option>₹25,000 - ₹40,000</option><option>Above ₹40,000</option></select></div>
     <div class="field"><label class="field-label">Languages</label><div class="chip-grid" id="langChips"><div class="chip" onclick="chipToggle(this)">Tamil</div><div class="chip" onclick="chipToggle(this)">Hindi</div><div class="chip" onclick="chipToggle(this)">English</div><div class="chip" onclick="chipToggle(this)">Telugu</div><div class="chip" onclick="chipToggle(this)">Kannada</div><div class="chip" onclick="chipToggle(this)">Malayalam</div></div></div>
@@ -294,6 +326,7 @@ function validateStep(step) {
     if (document.querySelectorAll('.role-chip.selected').length === 0) { flash('Select at least one role'); return false }
   }
   if (step === 3) {
+    if (!document.querySelector('[onclick*="\'edu\'"].selected')) { flash('Select your education'); return false }
     if (document.querySelectorAll('#situationChips .chip.selected').length === 0) { flash('Select your current situation'); return false }
     if (document.querySelectorAll('#dayChips .chip.selected').length === 0) { flash('Select at least one day'); return false }
     if (document.querySelectorAll('#timeSlots .time-slot.selected').length === 0) { flash('Select at least one time slot'); return false }
@@ -333,6 +366,32 @@ function chipSingle(el, cid) {
   el.classList.add('selected');
 }
 function timeToggle(el) { el.classList.toggle('selected') }
+
+// ── WORK EXPERIENCE ──
+let workExperiences = [];
+
+function addExperience() {
+  const role = document.getElementById('expRole').value.trim();
+  const period = document.getElementById('expPeriod').value;
+  if (!role) { shake('expRole'); return }
+  if (!period) { flash('Select a period'); return }
+  workExperiences.push({ role, period });
+  renderExperiences();
+  document.getElementById('expRole').value = '';
+  document.getElementById('expPeriod').selectedIndex = 0;
+}
+
+function removeExperience(idx) {
+  workExperiences.splice(idx, 1);
+  renderExperiences();
+}
+
+function renderExperiences() {
+  const container = document.getElementById('expEntries');
+  container.innerHTML = workExperiences.map((exp, i) =>
+    '<div class="exp-entry"><div class="exp-entry-info"><div class="exp-entry-role">' + exp.role + '</div><div class="exp-entry-period">' + exp.period + '</div></div><button class="exp-remove" onclick="removeExperience(' + i + ')">×</button></div>'
+  ).join('');
+}
 
 // ── CLUSTER ROLE LOGIC ──
 function roleChipToggle(el, cluster) {
@@ -388,7 +447,8 @@ async function submitForm() {
     gender: getToggleText('gender'),
     pincode: document.getElementById('fpincode').value.trim(),
     roles: [...document.querySelectorAll('.role-chip.selected')].map(r => r.textContent.trim()).join(', '),
-    experience: getToggleText('exp'),
+    education: getToggleText('edu'),
+    workExperience: workExperiences.map(e => e.role + ' (' + e.period + ')').join(' | '),
     situation: getChipTexts('situationChips'),
     income: document.getElementById('fincome').value || '',
     languages: getChipTexts('langChips'),
