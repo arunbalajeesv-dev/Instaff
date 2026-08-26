@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Instaff — Flexible Shifts, Instant Pay</title>
+<meta name="description" content="Join Instaff — pick shifts, earn daily. Flexible gig work at top restaurants, multiplexes and venues near you.">
+<meta name="theme-color" content="#FFFFFF">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --bg:#FFFFFF;--surface:#F7F8FA;--card:#FFFFFF;--card2:#F0F2F5;
+    --border:#E2E5EA;--accent:#0A9B80;--accent-light:#E8F7F4;--accent2:#E8520E;--accent2-light:#FEF0EA;--warning:#D97B00;
+    --text:#1A1D21;--muted:#5F6A78;--dim:#9BA5B1;
+    --r:12px;--rs:8px;
+    --shadow:0 1px 3px rgba(0,0,0,0.06),0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md:0 4px 12px rgba(0,0,0,0.08);
+  }
+  html{scroll-behavior:smooth}
+  body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100dvh;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:460px;margin:0 auto;padding:0 20px 40px}
+
+  .hero{padding:40px 20px 24px;text-align:center;background:linear-gradient(180deg,var(--accent-light) 0%,var(--bg) 100%)}
+  .hero-logo{font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:700;color:var(--text);margin-bottom:2px}
+  .hero-logo span{color:var(--accent)}
+  .hero-tag{font-size:10px;letter-spacing:1.5px;font-weight:600;color:var(--muted);text-transform:uppercase;margin-bottom:12px}
+  .hero-sub{font-size:13px;color:var(--muted);line-height:1.5;max-width:320px;margin:0 auto}
+  .trust-strip{display:flex;justify-content:center;gap:12px;margin-top:14px;flex-wrap:wrap}
+  .trust-pill{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:var(--muted);background:var(--bg);border:1px solid var(--border);padding:6px 12px;border-radius:20px;box-shadow:var(--shadow)}
+  .trust-pill .td{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+
+  .progress-bar{display:flex;gap:4px;margin:20px 0 24px}
+  .progress-seg{flex:1;height:4px;border-radius:2px;background:var(--border);transition:background .3s}
+  .progress-seg.done{background:var(--accent)}
+
+  .step{display:none;animation:fadeIn .3s ease}
+  .step.active{display:block}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .step-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);margin-bottom:4px}
+  .step-title{font-size:19px;font-weight:800;margin-bottom:4px;line-height:1.3;color:var(--text)}
+  .step-desc{font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.5}
+
+  .field{margin-bottom:16px}
+  .field-label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px}
+  .field-input{width:100%;padding:12px 14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--rs);color:var(--text);font-size:14px;font-family:inherit;transition:border .2s,box-shadow .2s;-webkit-appearance:none}
+  .field-input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-light)}
+  .field-input::placeholder{color:var(--dim)}
+  select.field-input{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239BA5B1' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
+  .phone-row{display:flex;gap:8px}
+  .phone-prefix{width:60px;text-align:center;background:var(--surface);color:var(--muted);font-weight:600}
+  .hint{font-size:11px;color:var(--dim);margin-top:4px;line-height:1.4}
+  .req{color:var(--accent2)}
+
+  /* ── CLUSTER ROLE SELECTOR ── */
+  .cluster-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;margin-bottom:10px}
+  .cluster-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+  .cluster-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+  .cluster-name{font-size:13px;font-weight:700;color:var(--text)}
+  .cluster-count{font-size:11px;color:var(--dim);margin-left:auto;font-weight:600}
+  .role-chips{display:flex;flex-wrap:wrap;gap:6px}
+  .role-chip{padding:8px 14px;border-radius:20px;font-size:12px;font-weight:600;border:1px solid var(--border);background:var(--bg);color:var(--muted);cursor:pointer;transition:all .15s;user-select:none;-webkit-tap-highlight-color:transparent;box-shadow:var(--shadow)}
+  .role-chip.selected{background:var(--accent-light);border-color:var(--accent);color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+  .role-chip:active{transform:scale(0.95)}
+  .cluster-all{font-size:11px;font-weight:700;color:var(--accent);cursor:pointer;padding:4px 0;margin-top:6px;display:inline-block;-webkit-tap-highlight-color:transparent}
+  .cluster-all:hover{text-decoration:underline}
+
+  .chip-grid{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{padding:9px 14px;border-radius:22px;font-size:12px;font-weight:600;border:1px solid var(--border);background:var(--bg);color:var(--muted);cursor:pointer;transition:all .2s;user-select:none;-webkit-tap-highlight-color:transparent}
+  .chip.selected{background:var(--accent-light);border-color:var(--accent);color:var(--accent)}
+  .chip:active{transform:scale(0.96)}
+
+  .toggle-row{display:flex;gap:8px;flex-wrap:wrap}
+  .toggle-opt{padding:10px 14px;border-radius:var(--rs);border:1px solid var(--border);background:var(--bg);text-align:center;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .2s;-webkit-tap-highlight-color:transparent}
+  .toggle-opt.selected{background:var(--accent-light);border-color:var(--accent);color:var(--accent)}
+
+  .time-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+  .time-slot{padding:10px 8px;border-radius:var(--rs);border:1px solid var(--border);background:var(--bg);text-align:center;font-size:11px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .2s;-webkit-tap-highlight-color:transparent;line-height:1.3;box-shadow:var(--shadow)}
+  .time-slot.selected{background:var(--accent-light);border-color:var(--accent);color:var(--accent)}
+  .time-slot:active{transform:scale(0.97)}
+  .time-slot-label{font-size:10px;color:var(--dim);margin-top:2px}
+  .time-slot.selected .time-slot-label{color:var(--accent)}
+
+  .range-wrap{margin-top:8px}
+  .range-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+  .range-val{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;color:var(--accent)}
+  .range-unit{font-size:12px;color:var(--muted)}
+  input[type=range]{-webkit-appearance:none;width:100%;height:4px;border-radius:2px;background:var(--border);outline:none}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:var(--accent);cursor:pointer;border:3px solid var(--bg);box-shadow:0 0 0 2px var(--accent),var(--shadow-md)}
+
+  .btn-row{display:flex;gap:10px;margin-top:24px}
+  .btn{flex:1;padding:14px;border:none;border-radius:var(--rs);font-family:inherit;font-size:15px;font-weight:600;cursor:pointer;transition:all .2s;-webkit-tap-highlight-color:transparent}
+  .btn-primary{background:var(--accent);color:#FFF;box-shadow:0 2px 8px rgba(10,155,128,0.25)}
+  .btn-primary:hover{background:#088A72}
+  .btn-primary:active{transform:scale(0.98)}
+  .btn-ghost{background:var(--bg);color:var(--muted);border:1px solid var(--border)}
+  .btn:disabled{opacity:0.4;pointer-events:none}
+  .btn-loading{position:relative;color:transparent}
+  .btn-loading::after{content:'';position:absolute;width:20px;height:20px;border:3px solid rgba(255,255,255,0.3);border-top-color:#FFF;border-radius:50%;animation:spin .6s linear infinite;top:50%;left:50%;margin:-10px 0 0 -10px}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  .success-screen{display:none;text-align:center;padding:50px 20px;animation:fadeIn .4s ease}
+  .success-screen.active{display:block}
+  .success-icon{width:72px;height:72px;border-radius:50%;background:var(--accent-light);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:32px}
+  .success-title{font-size:20px;font-weight:800;margin-bottom:6px}
+  .success-sub{font-size:13px;color:var(--muted);line-height:1.6;max-width:300px;margin:0 auto 20px}
+  .success-id{display:inline-block;padding:8px 20px;background:var(--surface);border:1px solid var(--border);border-radius:20px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;color:var(--accent);margin-bottom:20px}
+  .wa-btn{display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;padding:13px 24px;border-radius:var(--rs);font-weight:600;font-size:14px;text-decoration:none;font-family:inherit;border:none;cursor:pointer;box-shadow:0 2px 8px rgba(37,211,102,0.3)}
+
+  .toast{position:fixed;top:16px;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;z-index:100;animation:fadeIn .2s ease;font-family:Inter,sans-serif;box-shadow:var(--shadow-md)}
+  .toast-error{background:var(--accent2);color:#fff}
+  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-logo">In<span>staff</span></div>
+  <div class="hero-tag">Instant Staffing For Work</div>
+  <div class="hero-sub">Join Instaff and get matched to paid shifts at restaurants, multiplexes, malls, and venues near you.</div>
+  <div class="trust-strip">
+    <div class="trust-pill"><div class="td"></div>No joining fee</div>
+    <div class="trust-pill"><div class="td"></div>Weekly pay</div>
+    <div class="trust-pill"><div class="td"></div>Pick your shifts</div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="progress-bar" id="progressBar">
+    <div class="progress-seg done"></div><div class="progress-seg"></div><div class="progress-seg"></div><div class="progress-seg"></div>
+  </div>
+
+  <!-- ═══ STEP 1 ═══ -->
+  <div class="step active" id="step1">
+    <div class="step-label">Step 1 of 4</div>
+    <div class="step-title">Let's start with you</div>
+    <div class="step-desc">Takes 2 minutes. No documents needed right now.</div>
+    <div class="field"><label class="field-label">Full Name <span class="req">*</span></label><input type="text" class="field-input" id="fname" placeholder="Your name" autocomplete="name"></div>
+    <div class="field"><label class="field-label">Phone (WhatsApp) <span class="req">*</span></label><div class="phone-row"><input type="text" class="field-input phone-prefix" value="+91" readonly><input type="tel" class="field-input" id="fphone" placeholder="98765 43210" maxlength="12" autocomplete="tel"></div><div class="hint">We'll send shift alerts on WhatsApp</div></div>
+    <div class="field"><label class="field-label">Age <span class="req">*</span></label><div class="toggle-row"><div class="toggle-opt" onclick="toggleSelect(this,'age')">18-21</div><div class="toggle-opt" onclick="toggleSelect(this,'age')">22-25</div><div class="toggle-opt" onclick="toggleSelect(this,'age')">26-30</div><div class="toggle-opt" onclick="toggleSelect(this,'age')">31-35</div><div class="toggle-opt" onclick="toggleSelect(this,'age')">36+</div></div></div>
+    <div class="field"><label class="field-label">Gender</label><div class="toggle-row"><div class="toggle-opt" onclick="toggleSelect(this,'gender')">Male</div><div class="toggle-opt" onclick="toggleSelect(this,'gender')">Female</div><div class="toggle-opt" onclick="toggleSelect(this,'gender')">Other</div></div></div>
+    <div class="field"><label class="field-label">Pincode <span class="req">*</span></label><input type="tel" class="field-input" id="fpincode" placeholder="e.g., 600017" maxlength="6"><div class="hint">We match you to shifts near your location</div></div>
+    <div class="btn-row"><button class="btn btn-primary" onclick="goStep(2)">Next →</button></div>
+  </div>
+
+  <!-- ═══ STEP 2: CLUSTERED ROLES ═══ -->
+  <div class="step" id="step2">
+    <div class="step-label">Step 2 of 4</div>
+    <div class="step-title">What work can you do?</div>
+    <div class="step-desc">Tap all roles you're comfortable with. More = more shifts. <span class="req">*</span></div>
+
+    <div class="cluster-box" id="cluster-kitchen">
+      <div class="cluster-header">
+        <div class="cluster-dot" style="background:var(--accent2)"></div>
+        <div class="cluster-name">Kitchen & F&B</div>
+        <div class="cluster-count" id="count-kitchen">0 selected</div>
+      </div>
+      <div class="role-chips">
+        <div class="role-chip" onclick="roleChipToggle(this,'kitchen')">Dishwashing</div>
+        <div class="role-chip" onclick="roleChipToggle(this,'kitchen')">Kitchen Helper</div>
+        <div class="role-chip" onclick="roleChipToggle(this,'kitchen')">Commis / Cook</div>
+        <div class="role-chip" onclick="roleChipToggle(this,'kitchen')">POS / Cashier</div>
+      </div>
+      <div class="cluster-all" onclick="selectAllCluster('cluster-kitchen','kitchen')">Select all</div>
+    </div>
+
+    <div class="cluster-box" id="cluster-foh">
+      <div class="cluster-header">
+        <div class="cluster-dot" style="background:var(--accent)"></div>
+        <div class="cluster-name">Front of House</div>
+        <div class="cluster-count" id="count-foh">0 selected</div>
+      </div>
+      <div class="role-chips">
+        <div class="role-chip" onclick="roleChipToggle(this,'foh')">Server / Table Prep</div>
+        <div class="role-chip" onclick="roleChipToggle(this,'foh')">Guest Assistance</div>
+        <div class="role-chip" onclick="roleChipToggle(this,'foh')">Parking Assistant</div>
+      </div>
+      <div class="cluster-all" onclick="selectAllCluster('cluster-foh','foh')">Select all</div>
+    </div>
+
+    <div class="cluster-box" id="cluster-facility">
+      <div class="cluster-header">
+        <div class="cluster-dot" style="background:var(--warning)"></div>
+        <div class="cluster-name">Facility & Operations</div>
+        <div class="cluster-count" id="count-facility">0 selected</div>
+      </div>
+      <div class="role-chips">
+        <div class="role-chip" onclick="roleChipToggle(this,'facility')">Cleaning</div>
+        <div class="role-chip" onclick="roleChipToggle(this,'facility')">Housekeeping</div>
+        <div class="role-chip" onclick="roleChipToggle(this,'facility')">Loading / Unloading</div>
+        <div class="role-chip" onclick="roleChipToggle(this,'facility')">Inventory Counting</div>
+        <div class="role-chip" onclick="roleChipToggle(this,'facility')">Supervisor</div>
+        <div class="role-chip" onclick="roleChipToggle(this,'facility')">Security</div>
+      </div>
+      <div class="cluster-all" onclick="selectAllCluster('cluster-facility','facility')">Select all</div>
+    </div>
+
+    <div class="cluster-box" id="cluster-trades">
+      <div class="cluster-header">
+        <div class="cluster-dot" style="background:#7C3AED"></div>
+        <div class="cluster-name">Skilled Trades</div>
+        <div class="cluster-count" id="count-trades">0 selected</div>
+      </div>
+      <div class="role-chips">
+        <div class="role-chip" onclick="roleChipToggle(this,'trades')">Electrician</div>
+        <div class="role-chip" onclick="roleChipToggle(this,'trades')">Plumber</div>
+        <div class="role-chip" onclick="roleChipToggle(this,'trades')">Carpenter</div>
+      </div>
+      <div class="cluster-all" onclick="selectAllCluster('cluster-trades','trades')">Select all</div>
+    </div>
+
+    <div class="btn-row"><button class="btn btn-ghost" onclick="goStep(1)">← Back</button><button class="btn btn-primary" onclick="goStep(3)">Next →</button></div>
+  </div>
+
+  <!-- ═══ STEP 3 ═══ -->
+  <div class="step" id="step3">
+    <div class="step-label">Step 3 of 4</div>
+    <div class="step-title">Experience & availability</div>
+    <div class="field"><label class="field-label">Experience in any selected roles</label><div class="toggle-row"><div class="toggle-opt" onclick="toggleSelect(this,'exp')">None</div><div class="toggle-opt" onclick="toggleSelect(this,'exp')">Under 1yr</div><div class="toggle-opt" onclick="toggleSelect(this,'exp')">1-3 yrs</div><div class="toggle-opt" onclick="toggleSelect(this,'exp')">3+ yrs</div></div></div>
+    <div class="field"><label class="field-label">Current situation <span class="req">*</span></label><div class="chip-grid" id="situationChips"><div class="chip" onclick="chipSingle(this,'situationChips')">Student</div><div class="chip" onclick="chipSingle(this,'situationChips')">Working full-time</div><div class="chip" onclick="chipSingle(this,'situationChips')">Working part-time</div><div class="chip" onclick="chipSingle(this,'situationChips')">Between jobs</div><div class="chip" onclick="chipSingle(this,'situationChips')">Freelancing / daily wage</div><div class="chip" onclick="chipSingle(this,'situationChips')">Homemaker</div></div></div>
+    <div class="field"><label class="field-label">Current monthly income</label><select class="field-input" id="fincome"><option value="" disabled selected>Select range</option><option>No income currently</option><option>Below ₹8,000</option><option>₹8,000 - ₹15,000</option><option>₹15,000 - ₹25,000</option><option>₹25,000 - ₹40,000</option><option>Above ₹40,000</option></select></div>
+    <div class="field"><label class="field-label">Languages</label><div class="chip-grid" id="langChips"><div class="chip" onclick="chipToggle(this)">Tamil</div><div class="chip" onclick="chipToggle(this)">Hindi</div><div class="chip" onclick="chipToggle(this)">English</div><div class="chip" onclick="chipToggle(this)">Telugu</div><div class="chip" onclick="chipToggle(this)">Kannada</div><div class="chip" onclick="chipToggle(this)">Malayalam</div></div></div>
+    <div class="field"><label class="field-label">Which days? <span class="req">*</span></label><div class="chip-grid" id="dayChips"><div class="chip" onclick="chipToggle(this)">Mon</div><div class="chip" onclick="chipToggle(this)">Tue</div><div class="chip" onclick="chipToggle(this)">Wed</div><div class="chip" onclick="chipToggle(this)">Thu</div><div class="chip" onclick="chipToggle(this)">Fri</div><div class="chip" onclick="chipToggle(this)">Sat</div><div class="chip" onclick="chipToggle(this)">Sun</div></div><div class="hint">Weekends = more shifts</div></div>
+    <div class="field"><label class="field-label">Preferred timing <span class="req">*</span></label>
+      <div class="time-grid" id="timeSlots">
+        <div class="time-slot" onclick="timeToggle(this)">6:00 – 9:00 AM<div class="time-slot-label">Early Morning</div></div>
+        <div class="time-slot" onclick="timeToggle(this)">9:00 AM – 12:00 PM<div class="time-slot-label">Morning</div></div>
+        <div class="time-slot" onclick="timeToggle(this)">12:00 – 3:00 PM<div class="time-slot-label">Afternoon</div></div>
+        <div class="time-slot" onclick="timeToggle(this)">3:00 – 6:00 PM<div class="time-slot-label">Late Afternoon</div></div>
+        <div class="time-slot" onclick="timeToggle(this)">6:00 – 9:00 PM<div class="time-slot-label">Evening</div></div>
+        <div class="time-slot" onclick="timeToggle(this)">9:00 PM – 12:00 AM<div class="time-slot-label">Night</div></div>
+        <div class="time-slot" onclick="timeToggle(this)">12:00 – 2:00 AM<div class="time-slot-label">Late Night</div></div>
+      </div>
+      <div class="hint">Select all slots you're available for</div>
+    </div>
+    <div class="field"><label class="field-label">Hours per week</label><div class="range-wrap"><div class="range-top"><span class="range-val" id="hrsVal">20</span><span class="range-unit">hrs / week</span></div><input type="range" min="4" max="48" value="20" id="hrsRange" oninput="document.getElementById('hrsVal').textContent=this.value"></div></div>
+    <div class="field"><label class="field-label">Can you start?</label><div class="toggle-row"><div class="toggle-opt" onclick="toggleSelect(this,'start')">This week</div><div class="toggle-opt" onclick="toggleSelect(this,'start')">Next week</div><div class="toggle-opt" onclick="toggleSelect(this,'start')">In 2+ weeks</div></div></div>
+    <div class="btn-row"><button class="btn btn-ghost" onclick="goStep(2)">← Back</button><button class="btn btn-primary" onclick="goStep(4)">Next →</button></div>
+  </div>
+
+  <!-- ═══ STEP 4 ═══ -->
+  <div class="step" id="step4">
+    <div class="step-label">Step 4 of 4</div>
+    <div class="step-title">Last step</div>
+    <div class="field"><label class="field-label">What matters most to you? <span class="req">*</span></label><div class="chip-grid" id="motivChips"><div class="chip" onclick="chipToggle(this)">Extra income on the side</div><div class="chip" onclick="chipToggle(this)">Flexible — work when I want</div><div class="chip" onclick="chipToggle(this)">Guaranteed pay per shift</div><div class="chip" onclick="chipToggle(this)">Work near my home</div><div class="chip" onclick="chipToggle(this)">No contractor / agent cuts</div><div class="chip" onclick="chipToggle(this)">Learn a new skill</div><div class="chip" onclick="chipToggle(this)">Better than current job</div></div><div class="hint">Select up to 3</div></div>
+    <div class="field"><label class="field-label">Aadhaar card?</label><div class="toggle-row"><div class="toggle-opt selected" onclick="toggleSelect(this,'aadhaar')">Yes</div><div class="toggle-opt" onclick="toggleSelect(this,'aadhaar')">No</div></div></div>
+    <div class="field"><label class="field-label">Transport</label><div class="chip-grid" id="transportChips"><div class="chip" onclick="chipSingle(this,'transportChips')">Two-wheeler</div><div class="chip" onclick="chipSingle(this,'transportChips')">Bicycle</div><div class="chip" onclick="chipSingle(this,'transportChips')">Public transport</div><div class="chip" onclick="chipSingle(this,'transportChips')">Walking distance</div></div></div>
+    <div class="btn-row"><button class="btn btn-ghost" onclick="goStep(3)">← Back</button><button class="btn btn-primary" onclick="submitForm()" id="submitBtn">Join Instaff ✓</button></div>
+  </div>
+
+  <!-- ═══ SUCCESS ═══ -->
+  <div class="success-screen" id="successScreen">
+    <div class="success-icon">🎉</div>
+    <div class="success-title">Welcome to Instaff!</div>
+    <div class="success-sub">You're registered. We'll send your first shift opportunity on WhatsApp within 24 hours.</div>
+    <div class="success-id" id="leadId">IS-W-0001</div><br><br>
+    <a href="https://wa.me/918610852323?text=Hi%20Instaff!%20I%20just%20signed%20up%20and%20I'm%20ready%20for%20shifts!" class="wa-btn" target="_blank">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.832-1.438A9.955 9.955 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18a8 8 0 01-4.243-1.214l-.252-.149-2.868.852.852-2.868-.168-.268A8 8 0 1112 20z"/></svg>
+      Message us on WhatsApp
+    </a>
+  </div>
+</div>
+
+<script>
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwxVgo0htc530DUloSeTwFTqFywlFpDOcm2BvmhX1qAKyNrwz_kA-ZfjH243-3jsgdaSg/exec';
+let currentStep = 1;
+
+function goStep(n) {
+  if (n > currentStep && !validateStep(currentStep)) return;
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.getElementById('step' + n).classList.add('active');
+  currentStep = n;
+  updateProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateProgress() {
+  document.querySelectorAll('.progress-seg').forEach((seg, i) => {
+    seg.className = 'progress-seg';
+    if (i < currentStep) seg.classList.add('done');
+  });
+}
+
+function validateStep(step) {
+  if (step === 1) {
+    if (!v('fname')) { shake('fname'); return false }
+    if (document.getElementById('fphone').value.replace(/\s/g, '').length < 10) { shake('fphone'); return false }
+    if (!document.querySelector('[onclick*="\'age\'"].selected')) { flash('Select your age range'); return false }
+    const pin = document.getElementById('fpincode').value.trim();
+    if (pin.length !== 6 || !/^\d{6}$/.test(pin)) { shake('fpincode'); return false }
+  }
+  if (step === 2) {
+    if (document.querySelectorAll('.role-chip.selected').length === 0) { flash('Select at least one role'); return false }
+  }
+  if (step === 3) {
+    if (document.querySelectorAll('#situationChips .chip.selected').length === 0) { flash('Select your current situation'); return false }
+    if (document.querySelectorAll('#dayChips .chip.selected').length === 0) { flash('Select at least one day'); return false }
+    if (document.querySelectorAll('#timeSlots .time-slot.selected').length === 0) { flash('Select at least one time slot'); return false }
+  }
+  if (step === 4) {
+    if (document.querySelectorAll('#motivChips .chip.selected').length === 0) { flash('Select what matters to you'); return false }
+  }
+  return true;
+}
+
+function v(id) { return document.getElementById(id).value.trim().length > 0 }
+function shake(id) {
+  const el = document.getElementById(id);
+  el.style.borderColor = 'var(--accent2)';
+  el.style.animation = 'none'; el.offsetHeight;
+  el.style.animation = 'shake .4s ease';
+  el.focus();
+  setTimeout(() => el.style.borderColor = '', 2000);
+}
+function flash(msg) {
+  const t = document.createElement('div');
+  t.className = 'toast toast-error'; t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 2500);
+}
+function toggleSelect(el, group) {
+  el.parentElement.querySelectorAll('.toggle-opt').forEach(t => t.classList.remove('selected'));
+  el.classList.add('selected');
+}
+function chipToggle(el) {
+  const p = el.parentElement;
+  if (p.id === 'motivChips' && !el.classList.contains('selected') && p.querySelectorAll('.selected').length >= 3) { flash('Maximum 3'); return }
+  el.classList.toggle('selected');
+}
+function chipSingle(el, cid) {
+  document.querySelectorAll('#' + cid + ' .chip').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+}
+function timeToggle(el) { el.classList.toggle('selected') }
+
+// ── CLUSTER ROLE LOGIC ──
+function roleChipToggle(el, cluster) {
+  el.classList.toggle('selected');
+  updateClusterCount(cluster);
+}
+
+function selectAllCluster(boxId, cluster) {
+  const box = document.getElementById(boxId);
+  const chips = box.querySelectorAll('.role-chip');
+  const allSelected = [...chips].every(c => c.classList.contains('selected'));
+  chips.forEach(c => {
+    if (allSelected) c.classList.remove('selected');
+    else c.classList.add('selected');
+  });
+  const btn = box.querySelector('.cluster-all');
+  btn.textContent = allSelected ? 'Select all' : 'Deselect all';
+  updateClusterCount(cluster);
+}
+
+function updateClusterCount(cluster) {
+  const box = document.getElementById('cluster-' + cluster);
+  const count = box.querySelectorAll('.role-chip.selected').length;
+  const total = box.querySelectorAll('.role-chip').length;
+  document.getElementById('count-' + cluster).textContent = count > 0 ? count + ' of ' + total : '0 selected';
+  const btn = box.querySelector('.cluster-all');
+  btn.textContent = count === total ? 'Deselect all' : 'Select all';
+}
+
+function getToggleText(group) {
+  const all = document.querySelectorAll('.toggle-opt');
+  for (const el of all) {
+    if (el.getAttribute('onclick')?.includes("'" + group + "'") && el.classList.contains('selected')) return el.textContent.trim();
+  }
+  return '';
+}
+function getChipTexts(cid) {
+  return [...document.querySelectorAll('#' + cid + ' .chip.selected')].map(c => c.textContent.trim()).join(', ');
+}
+
+async function submitForm() {
+  if (!validateStep(4)) return;
+  const btn = document.getElementById('submitBtn');
+  btn.classList.add('btn-loading'); btn.disabled = true;
+
+  const leadId = 'IS-W-' + new Date().toISOString().slice(5, 10).replace('-', '') + '-' + String(Math.floor(Math.random() * 9999)).padStart(4, '0');
+
+  const data = {
+    timestamp: new Date().toISOString(),
+    name: document.getElementById('fname').value.trim(),
+    phone: '+91' + document.getElementById('fphone').value.trim(),
+    age: getToggleText('age'),
+    gender: getToggleText('gender'),
+    pincode: document.getElementById('fpincode').value.trim(),
+    roles: [...document.querySelectorAll('.role-chip.selected')].map(r => r.textContent.trim()).join(', '),
+    experience: getToggleText('exp'),
+    situation: getChipTexts('situationChips'),
+    income: document.getElementById('fincome').value || '',
+    languages: getChipTexts('langChips'),
+    days: getChipTexts('dayChips'),
+    timings: [...document.querySelectorAll('#timeSlots .time-slot.selected')].map(t => t.childNodes[0].textContent.trim()).join(', '),
+    hoursPerWeek: document.getElementById('hrsRange').value,
+    start: getToggleText('start'),
+    motivation: getChipTexts('motivChips'),
+    aadhaar: getToggleText('aadhaar'),
+    transport: getChipTexts('transportChips'),
+    leadId: leadId
+  };
+
+  if (GOOGLE_SCRIPT_URL) {
+    try { await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }); } catch (e) { console.error(e); }
+  }
+  console.log('WORKER LEAD:', JSON.stringify(data, null, 2));
+
+  setTimeout(() => {
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+    document.getElementById('progressBar').style.display = 'none';
+    document.getElementById('leadId').textContent = leadId;
+    document.getElementById('successScreen').classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, 600);
+}
+</script>
+</body>
+</html>
