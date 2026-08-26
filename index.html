@@ -410,6 +410,7 @@ async function submitForm() {
   setTimeout(() => {
     document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
     document.getElementById('progressBar').style.display = 'none';
+    document.querySelector('.hero').style.display = 'none';
     document.getElementById('leadId').textContent = leadId;
     document.getElementById('successScreen').classList.add('active');
     window.scrollTo({ top: 0, behavior: 'smooth' });
