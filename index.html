@@ -4,10 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Instaff — Flexible Shifts, Instant Pay</title>
-<meta name="description" content="Join Instaff — pick shifts, earn daily. Flexible gig work at top restaurants, multiplexes and venues near you.">
 <meta name="theme-color" content="#FFFFFF">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=Noto+Sans+Tamil:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
   :root{
@@ -20,13 +19,20 @@
   }
   html{scroll-behavior:smooth}
   body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100dvh;-webkit-font-smoothing:antialiased}
+  body.ta{font-family:'Noto Sans Tamil','Inter',sans-serif}
   .wrap{max-width:460px;margin:0 auto;padding:0 20px 40px}
 
-  .hero{padding:40px 20px 24px;text-align:center;background:linear-gradient(180deg,var(--accent-light) 0%,var(--bg) 100%)}
+  /* LANG TOGGLE */
+  .lang-bar{display:flex;justify-content:flex-end;padding:10px 20px 0;max-width:460px;margin:0 auto}
+  .lang-toggle{display:flex;background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:3px;gap:2px}
+  .lang-btn{padding:6px 16px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:none;background:none;color:var(--muted);transition:all .2s;font-family:inherit}
+  .lang-btn.active{background:var(--accent);color:#fff;box-shadow:var(--shadow)}
+
+  .hero{padding:28px 20px 24px;text-align:center;background:linear-gradient(180deg,var(--accent-light) 0%,var(--bg) 100%)}
   .hero-logo{font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:700;color:var(--text);margin-bottom:2px}
   .hero-logo span{color:var(--accent)}
   .hero-tag{font-size:10px;letter-spacing:1.5px;font-weight:600;color:var(--muted);text-transform:uppercase;margin-bottom:12px}
-  .hero-sub{font-size:13px;color:var(--muted);line-height:1.5;max-width:320px;margin:0 auto}
+  .hero-sub{font-size:13px;color:var(--muted);line-height:1.6;max-width:320px;margin:0 auto}
   .trust-strip{display:flex;justify-content:center;gap:12px;margin-top:14px;flex-wrap:wrap}
   .trust-pill{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:var(--muted);background:var(--bg);border:1px solid var(--border);padding:6px 12px;border-radius:20px;box-shadow:var(--shadow)}
   .trust-pill .td{width:6px;height:6px;border-radius:50%;background:var(--accent)}
@@ -53,7 +59,6 @@
   .hint{font-size:11px;color:var(--dim);margin-top:4px;line-height:1.4}
   .req{color:var(--accent2)}
 
-  /* ── CLUSTER ROLE SELECTOR ── */
   .cluster-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;margin-bottom:10px}
   .cluster-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
   .cluster-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
@@ -64,7 +69,6 @@
   .role-chip.selected{background:var(--accent-light);border-color:var(--accent);color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
   .role-chip:active{transform:scale(0.95)}
   .cluster-all{font-size:11px;font-weight:700;color:var(--accent);cursor:pointer;padding:4px 0;margin-top:6px;display:inline-block;-webkit-tap-highlight-color:transparent}
-  .cluster-all:hover{text-decoration:underline}
 
   .chip-grid{display:flex;flex-wrap:wrap;gap:8px}
   .chip{padding:9px 14px;border-radius:22px;font-size:12px;font-weight:600;border:1px solid var(--border);background:var(--bg);color:var(--muted);cursor:pointer;transition:all .2s;user-select:none;-webkit-tap-highlight-color:transparent}
@@ -100,7 +104,6 @@
   .btn-loading::after{content:'';position:absolute;width:20px;height:20px;border:3px solid rgba(255,255,255,0.3);border-top-color:#FFF;border-radius:50%;animation:spin .6s linear infinite;top:50%;left:50%;margin:-10px 0 0 -10px}
   @keyframes spin{to{transform:rotate(360deg)}}
 
-  /* WORK EXPERIENCE */
   .exp-entries{margin-bottom:8px}
   .exp-entry{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:10px 12px;margin-bottom:6px;animation:fadeIn .2s ease}
   .exp-entry-info{flex:1;min-width:0}
@@ -121,21 +124,29 @@
   .success-id{display:inline-block;padding:8px 20px;background:var(--surface);border:1px solid var(--border);border-radius:20px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;color:var(--accent);margin-bottom:20px}
   .wa-btn{display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;padding:13px 24px;border-radius:var(--rs);font-weight:600;font-size:14px;text-decoration:none;font-family:inherit;border:none;cursor:pointer;box-shadow:0 2px 8px rgba(37,211,102,0.3)}
 
-  .toast{position:fixed;top:16px;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;z-index:100;animation:fadeIn .2s ease;font-family:Inter,sans-serif;box-shadow:var(--shadow-md)}
+  .toast{position:fixed;top:16px;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;z-index:100;animation:fadeIn .2s ease;font-family:inherit;box-shadow:var(--shadow-md)}
   .toast-error{background:var(--accent2);color:#fff}
   @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
 </style>
 </head>
 <body>
 
+<!-- LANG BAR -->
+<div class="lang-bar">
+  <div class="lang-toggle">
+    <button class="lang-btn active" onclick="setLang('en')" id="btn-en">English</button>
+    <button class="lang-btn" onclick="setLang('ta')" id="btn-ta">தமிழ்</button>
+  </div>
+</div>
+
 <div class="hero">
   <div class="hero-logo">In<span>staff</span></div>
-  <div class="hero-tag">Instant Staffing For Work</div>
-  <div class="hero-sub">Join Instaff and get matched to paid shifts at restaurants, multiplexes, malls, and venues near you.</div>
+  <div class="hero-tag" data-en="Instant Staffing For Work" data-ta="உடனடி வேலை வாய்ப்பு">Instant Staffing For Work</div>
+  <div class="hero-sub" data-en="Join Instaff and get matched to paid shifts at restaurants, multiplexes, malls, and venues near you." data-ta="உங்களுக்கு அருகிலுள்ள உணவகங்கள், மல்டிபிளக்ஸ், மால்கள் மற்றும் இடங்களில் ஊதிய ஷிப்ட்களில் இணையுங்கள்.">Join Instaff and get matched to paid shifts at restaurants, multiplexes, malls, and venues near you.</div>
   <div class="trust-strip">
-    <div class="trust-pill"><div class="td"></div>No joining fee</div>
-    <div class="trust-pill"><div class="td"></div>Weekly pay</div>
-    <div class="trust-pill"><div class="td"></div>Pick your shifts</div>
+    <div class="trust-pill"><div class="td"></div><span data-en="No joining fee" data-ta="சேர்க்கை கட்டணம் இல்லை">No joining fee</span></div>
+    <div class="trust-pill"><div class="td"></div><span data-en="Weekly pay" data-ta="வாராந்திர ஊதியம்">Weekly pay</span></div>
+    <div class="trust-pill"><div class="td"></div><span data-en="Pick your shifts" data-ta="உங்கள் ஷிப்ட் தேர்ந்தெடுங்கள்">Pick your shifts</span></div>
   </div>
 </div>
 
@@ -146,160 +157,350 @@
 
   <!-- ═══ STEP 1 ═══ -->
   <div class="step active" id="step1">
-    <div class="step-label">Step 1 of 4</div>
-    <div class="step-title">Let's start with you</div>
-    <div class="step-desc">Takes 2 minutes. No documents needed right now.</div>
-    <div class="field"><label class="field-label">Full Name <span class="req">*</span></label><input type="text" class="field-input" id="fname" placeholder="Your name" autocomplete="name"></div>
-    <div class="field"><label class="field-label">Phone (WhatsApp) <span class="req">*</span></label><div class="phone-row"><input type="text" class="field-input phone-prefix" value="+91" readonly><input type="tel" class="field-input" id="fphone" placeholder="98765 43210" maxlength="12" autocomplete="tel"></div><div class="hint">We'll send shift alerts on WhatsApp</div></div>
-    <div class="field"><label class="field-label">Email ID</label><input type="email" class="field-input" id="femail" placeholder="yourname@email.com" autocomplete="email"></div>
-    <div class="field"><label class="field-label">Age <span class="req">*</span></label><div class="toggle-row"><div class="toggle-opt" onclick="toggleSelect(this,'age')">18-21</div><div class="toggle-opt" onclick="toggleSelect(this,'age')">22-25</div><div class="toggle-opt" onclick="toggleSelect(this,'age')">26-30</div><div class="toggle-opt" onclick="toggleSelect(this,'age')">31-35</div><div class="toggle-opt" onclick="toggleSelect(this,'age')">36+</div></div></div>
-    <div class="field"><label class="field-label">Gender</label><div class="toggle-row"><div class="toggle-opt" onclick="toggleSelect(this,'gender')">Male</div><div class="toggle-opt" onclick="toggleSelect(this,'gender')">Female</div><div class="toggle-opt" onclick="toggleSelect(this,'gender')">Other</div></div></div>
-    <div class="field"><label class="field-label">Pincode (current accommodation) <span class="req">*</span></label><input type="tel" class="field-input" id="fpincode" placeholder="e.g., 600017" maxlength="6"><div class="hint">We match you to shifts near your location</div></div>
-    <div class="btn-row"><button class="btn btn-primary" onclick="goStep(2)">Next →</button></div>
+    <div class="step-label" data-en="Step 1 of 4" data-ta="படி 1 / 4">Step 1 of 4</div>
+    <div class="step-title" data-en="Let's start with you" data-ta="உங்களைப் பற்றி தெரிந்துகொள்வோம்">Let's start with you</div>
+    <div class="step-desc" data-en="Takes 2 minutes. No documents needed right now." data-ta="2 நிமிடம் மட்டுமே ஆகும். இப்போது ஆவணங்கள் தேவையில்லை.">Takes 2 minutes. No documents needed right now.</div>
+
+    <div class="field">
+      <label class="field-label" data-en="Full Name *" data-ta="முழு பெயர் *">Full Name <span class="req">*</span></label>
+      <input type="text" class="field-input" id="fname" data-ph-en="Your name" data-ph-ta="உங்கள் பெயர்" placeholder="Your name" autocomplete="name">
+    </div>
+    <div class="field">
+      <label class="field-label" data-en="Phone (WhatsApp) *" data-ta="தொலைபேசி (WhatsApp) *">Phone (WhatsApp) <span class="req">*</span></label>
+      <div class="phone-row">
+        <input type="text" class="field-input phone-prefix" value="+91" readonly>
+        <input type="tel" class="field-input" id="fphone" placeholder="98765 43210" maxlength="12" autocomplete="tel">
+      </div>
+      <div class="hint" data-en="We'll send shift alerts on WhatsApp" data-ta="WhatsApp-ல் ஷிப்ட் அறிவிப்புகள் அனுப்புவோம்">We'll send shift alerts on WhatsApp</div>
+    </div>
+    <div class="field">
+      <label class="field-label" data-en="Email ID" data-ta="மின்னஞ்சல் முகவரி">Email ID</label>
+      <input type="email" class="field-input" id="femail" data-ph-en="yourname@email.com" data-ph-ta="yourname@email.com" placeholder="yourname@email.com" autocomplete="email">
+    </div>
+    <div class="field">
+      <label class="field-label" data-en="Age *" data-ta="வயது *">Age <span class="req">*</span></label>
+      <div class="toggle-row">
+        <div class="toggle-opt" onclick="toggleSelect(this,'age')">18-21</div>
+        <div class="toggle-opt" onclick="toggleSelect(this,'age')">22-25</div>
+        <div class="toggle-opt" onclick="toggleSelect(this,'age')">26-30</div>
+        <div class="toggle-opt" onclick="toggleSelect(this,'age')">31-35</div>
+        <div class="toggle-opt" onclick="toggleSelect(this,'age')">36+</div>
+      </div>
+    </div>
+    <div class="field">
+      <label class="field-label" data-en="Gender" data-ta="பாலினம்">Gender</label>
+      <div class="toggle-row">
+        <div class="toggle-opt" data-en="Male" data-ta="ஆண்" onclick="toggleSelect(this,'gender')">Male</div>
+        <div class="toggle-opt" data-en="Female" data-ta="பெண்" onclick="toggleSelect(this,'gender')">Female</div>
+        <div class="toggle-opt" data-en="Other" data-ta="மற்றவை" onclick="toggleSelect(this,'gender')">Other</div>
+      </div>
+    </div>
+    <div class="field">
+      <label class="field-label" data-en="Pincode (current accommodation) *" data-ta="இப்போது வசிக்கும் இடத்தின் பின்கோடு *">Pincode (current accommodation) <span class="req">*</span></label>
+      <input type="tel" class="field-input" id="fpincode" data-ph-en="e.g., 600017" data-ph-ta="எ.கா., 600017" placeholder="e.g., 600017" maxlength="6">
+      <div class="hint" data-en="We match you to shifts near your location" data-ta="உங்களுக்கு அருகிலுள்ள ஷிப்ட்களை பொருத்துவோம்">We match you to shifts near your location</div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" data-en="Next →" data-ta="அடுத்து →" onclick="goStep(2)">Next →</button>
+    </div>
   </div>
 
-  <!-- ═══ STEP 2: CLUSTERED ROLES ═══ -->
+  <!-- ═══ STEP 2 ═══ -->
   <div class="step" id="step2">
-    <div class="step-label">Step 2 of 4</div>
-    <div class="step-title">What work can you do?</div>
-    <div class="step-desc">Tap all roles you're comfortable with. More = more shifts. <span class="req">*</span></div>
+    <div class="step-label" data-en="Step 2 of 4" data-ta="படி 2 / 4">Step 2 of 4</div>
+    <div class="step-title" data-en="What work can you do?" data-ta="நீங்கள் என்ன வேலை செய்யலாம்?">What work can you do?</div>
+    <div class="step-desc" data-en="Tap all roles you're comfortable with. More = more shifts." data-ta="நீங்கள் செய்யக்கூடிய அனைத்து பணிகளையும் தேர்வு செய்யுங்கள். அதிகமாக = அதிக ஷிப்ட்கள்.">Tap all roles you're comfortable with. More = more shifts. <span class="req">*</span></div>
 
     <div class="cluster-box" id="cluster-kitchen">
       <div class="cluster-header">
         <div class="cluster-dot" style="background:var(--accent2)"></div>
-        <div class="cluster-name">Kitchen & F&B</div>
+        <div class="cluster-name" data-en="Kitchen & F&B" data-ta="சமையலறை & உணவு">Kitchen & F&B</div>
         <div class="cluster-count" id="count-kitchen">0 selected</div>
       </div>
       <div class="role-chips">
-        <div class="role-chip" onclick="roleChipToggle(this,'kitchen')">Dishwashing</div>
-        <div class="role-chip" onclick="roleChipToggle(this,'kitchen')">Kitchen Helper</div>
-        <div class="role-chip" onclick="roleChipToggle(this,'kitchen')">Commis / Cook</div>
-        <div class="role-chip" onclick="roleChipToggle(this,'kitchen')">POS / Cashier</div>
+        <div class="role-chip" data-en="Dishwashing" data-ta="பாத்திரம் கழுவுதல்" onclick="roleChipToggle(this,'kitchen')">Dishwashing</div>
+        <div class="role-chip" data-en="Kitchen Helper" data-ta="சமையலறை உதவியாளர்" onclick="roleChipToggle(this,'kitchen')">Kitchen Helper</div>
+        <div class="role-chip" data-en="Commis / Cook" data-ta="சமையல்காரர்" onclick="roleChipToggle(this,'kitchen')">Commis / Cook</div>
+        <div class="role-chip" data-en="POS / Cashier" data-ta="காஷியர்" onclick="roleChipToggle(this,'kitchen')">POS / Cashier</div>
       </div>
-      <div class="cluster-all" onclick="selectAllCluster('cluster-kitchen','kitchen')">Select all</div>
+      <div class="cluster-all" data-en="Select all" data-ta="அனைத்தும் தேர்வு" onclick="selectAllCluster('cluster-kitchen','kitchen')">Select all</div>
     </div>
 
     <div class="cluster-box" id="cluster-foh">
       <div class="cluster-header">
         <div class="cluster-dot" style="background:var(--accent)"></div>
-        <div class="cluster-name">Front of House</div>
+        <div class="cluster-name" data-en="Front of House" data-ta="வாடிக்கையாளர் சேவை">Front of House</div>
         <div class="cluster-count" id="count-foh">0 selected</div>
       </div>
       <div class="role-chips">
-        <div class="role-chip" onclick="roleChipToggle(this,'foh')">Server / Table Prep</div>
-        <div class="role-chip" onclick="roleChipToggle(this,'foh')">Guest Assistance</div>
-        <div class="role-chip" onclick="roleChipToggle(this,'foh')">Parking Assistant</div>
+        <div class="role-chip" data-en="Server / Table Prep" data-ta="சேவையாளர்" onclick="roleChipToggle(this,'foh')">Server / Table Prep</div>
+        <div class="role-chip" data-en="Guest Assistance" data-ta="விருந்தினர் உதவி" onclick="roleChipToggle(this,'foh')">Guest Assistance</div>
+        <div class="role-chip" data-en="Parking Assistant" data-ta="பார்க்கிங் உதவியாளர்" onclick="roleChipToggle(this,'foh')">Parking Assistant</div>
       </div>
-      <div class="cluster-all" onclick="selectAllCluster('cluster-foh','foh')">Select all</div>
+      <div class="cluster-all" data-en="Select all" data-ta="அனைத்தும் தேர்வு" onclick="selectAllCluster('cluster-foh','foh')">Select all</div>
     </div>
 
     <div class="cluster-box" id="cluster-facility">
       <div class="cluster-header">
         <div class="cluster-dot" style="background:var(--warning)"></div>
-        <div class="cluster-name">Facility & Operations</div>
+        <div class="cluster-name" data-en="Facility & Operations" data-ta="வசதி & செயல்பாடு">Facility & Operations</div>
         <div class="cluster-count" id="count-facility">0 selected</div>
       </div>
       <div class="role-chips">
-        <div class="role-chip" onclick="roleChipToggle(this,'facility')">Cleaning</div>
-        <div class="role-chip" onclick="roleChipToggle(this,'facility')">Housekeeping</div>
-        <div class="role-chip" onclick="roleChipToggle(this,'facility')">Loading / Unloading</div>
-        <div class="role-chip" onclick="roleChipToggle(this,'facility')">Inventory Counting</div>
-        <div class="role-chip" onclick="roleChipToggle(this,'facility')">Supervisor</div>
-        <div class="role-chip" onclick="roleChipToggle(this,'facility')">Security</div>
+        <div class="role-chip" data-en="Cleaning" data-ta="சுத்தம் செய்தல்" onclick="roleChipToggle(this,'facility')">Cleaning</div>
+        <div class="role-chip" data-en="Housekeeping" data-ta="அறை பராமரிப்பு" onclick="roleChipToggle(this,'facility')">Housekeeping</div>
+        <div class="role-chip" data-en="Loading / Unloading" data-ta="ஏற்றம் / இறக்கம்" onclick="roleChipToggle(this,'facility')">Loading / Unloading</div>
+        <div class="role-chip" data-en="Inventory Counting" data-ta="சரக்கு கணக்கிடல்" onclick="roleChipToggle(this,'facility')">Inventory Counting</div>
+        <div class="role-chip" data-en="Supervisor" data-ta="மேற்பார்வையாளர்" onclick="roleChipToggle(this,'facility')">Supervisor</div>
+        <div class="role-chip" data-en="Security" data-ta="பாதுகாப்பு" onclick="roleChipToggle(this,'facility')">Security</div>
       </div>
-      <div class="cluster-all" onclick="selectAllCluster('cluster-facility','facility')">Select all</div>
+      <div class="cluster-all" data-en="Select all" data-ta="அனைத்தும் தேர்வு" onclick="selectAllCluster('cluster-facility','facility')">Select all</div>
     </div>
 
     <div class="cluster-box" id="cluster-trades">
       <div class="cluster-header">
         <div class="cluster-dot" style="background:#7C3AED"></div>
-        <div class="cluster-name">Skilled Trades</div>
+        <div class="cluster-name" data-en="Skilled Trades" data-ta="திறன் தொழில்கள்">Skilled Trades</div>
         <div class="cluster-count" id="count-trades">0 selected</div>
       </div>
       <div class="role-chips">
-        <div class="role-chip" onclick="roleChipToggle(this,'trades')">Electrician</div>
-        <div class="role-chip" onclick="roleChipToggle(this,'trades')">Plumber</div>
-        <div class="role-chip" onclick="roleChipToggle(this,'trades')">Carpenter</div>
+        <div class="role-chip" data-en="Electrician" data-ta="மின்சாரமிஸ்திரி" onclick="roleChipToggle(this,'trades')">Electrician</div>
+        <div class="role-chip" data-en="Plumber" data-ta="பம்பர்" onclick="roleChipToggle(this,'trades')">Plumber</div>
+        <div class="role-chip" data-en="Carpenter" data-ta="தச்சர்" onclick="roleChipToggle(this,'trades')">Carpenter</div>
       </div>
-      <div class="cluster-all" onclick="selectAllCluster('cluster-trades','trades')">Select all</div>
+      <div class="cluster-all" data-en="Select all" data-ta="அனைத்தும் தேர்வு" onclick="selectAllCluster('cluster-trades','trades')">Select all</div>
     </div>
 
-    <div class="btn-row"><button class="btn btn-ghost" onclick="goStep(1)">← Back</button><button class="btn btn-primary" onclick="goStep(3)">Next →</button></div>
+    <div class="btn-row">
+      <button class="btn btn-ghost" data-en="← Back" data-ta="← திரும்பு" onclick="goStep(1)">← Back</button>
+      <button class="btn btn-primary" data-en="Next →" data-ta="அடுத்து →" onclick="goStep(3)">Next →</button>
+    </div>
   </div>
 
   <!-- ═══ STEP 3 ═══ -->
   <div class="step" id="step3">
-    <div class="step-label">Step 3 of 4</div>
-    <div class="step-title">Experience & availability</div>
-    <div class="field"><label class="field-label">Education <span class="req">*</span></label><div class="toggle-row"><div class="toggle-opt" onclick="toggleSelect(this,'edu')">10th</div><div class="toggle-opt" onclick="toggleSelect(this,'edu')">12th</div><div class="toggle-opt" onclick="toggleSelect(this,'edu')">Diploma</div><div class="toggle-opt" onclick="toggleSelect(this,'edu')">Degree</div></div></div>
+    <div class="step-label" data-en="Step 3 of 4" data-ta="படி 3 / 4">Step 3 of 4</div>
+    <div class="step-title" data-en="Experience & availability" data-ta="அனுபவம் & கிடைக்கும் நேரம்">Experience & availability</div>
+
     <div class="field">
-      <label class="field-label">Work Experience</label>
-      <div class="hint" style="margin-bottom:8px">Add your past or current roles. You can add multiple.</div>
-      <div class="exp-entries" id="expEntries"></div>
-      <div class="exp-add-row" style="flex-wrap:wrap">
-        <input type="text" class="field-input" id="expRole" placeholder="Role (e.g., Steward)" style="flex:1;min-width:120px">
-        <input type="text" class="field-input" id="expWorkplace" placeholder="Workplace (e.g., Taj Hotel)" style="flex:1;min-width:120px">
+      <label class="field-label" data-en="Education *" data-ta="கல்வி தகுதி *">Education <span class="req">*</span></label>
+      <div class="toggle-row">
+        <div class="toggle-opt" data-en="10th" data-ta="10ஆம் வகுப்பு" onclick="toggleSelect(this,'edu')">10th</div>
+        <div class="toggle-opt" data-en="12th" data-ta="12ஆம் வகுப்பு" onclick="toggleSelect(this,'edu')">12th</div>
+        <div class="toggle-opt" data-en="Diploma" data-ta="டிப்ளோமா" onclick="toggleSelect(this,'edu')">Diploma</div>
+        <div class="toggle-opt" data-en="Degree" data-ta="பட்டப்படிப்பு" onclick="toggleSelect(this,'edu')">Degree</div>
       </div>
-      <div class="exp-add-row" style="margin-top:6px">
+    </div>
+
+    <div class="field">
+      <label class="field-label" data-en="Work Experience" data-ta="பணி அனுபவம்">Work Experience</label>
+      <div class="hint" data-en="Add your past or current roles. You can add multiple." data-ta="உங்கள் கடந்தகால அல்லது தற்போதைய பணிகளை சேர்க்கவும். பலவற்றை சேர்க்கலாம்." style="margin-bottom:8px">Add your past or current roles. You can add multiple.</div>
+      <div class="exp-entries" id="expEntries"></div>
+      <div class="exp-add-row" style="flex-wrap:wrap;margin-bottom:6px">
+        <input type="text" class="field-input" id="expRole" data-ph-en="Role (e.g., Steward)" data-ph-ta="பணி (எ.கா., ஸ்டீவார்ட்)" placeholder="Role (e.g., Steward)" style="flex:1;min-width:120px">
+        <input type="text" class="field-input" id="expWorkplace" data-ph-en="Workplace (e.g., Taj Hotel)" data-ph-ta="பணியிடம் (எ.கா., Taj Hotel)" placeholder="Workplace (e.g., Taj Hotel)" style="flex:1;min-width:120px">
+      </div>
+      <div class="exp-add-row">
         <select class="field-input" id="expPeriod">
-          <option value="" disabled selected>Period</option>
-          <option>< 3 months</option>
-          <option>3-6 months</option>
-          <option>6-12 months</option>
-          <option>1-2 years</option>
-          <option>2-3 years</option>
-          <option>3-5 years</option>
-          <option>5+ years</option>
+          <option value="" disabled selected data-en="Period" data-ta="காலம்">Period</option>
+          <option data-en="< 3 months" data-ta="3 மாதங்களுக்கும் குறைவாக">&lt; 3 months</option>
+          <option data-en="3-6 months" data-ta="3-6 மாதங்கள்">3-6 months</option>
+          <option data-en="6-12 months" data-ta="6-12 மாதங்கள்">6-12 months</option>
+          <option data-en="1-2 years" data-ta="1-2 ஆண்டுகள்">1-2 years</option>
+          <option data-en="2-3 years" data-ta="2-3 ஆண்டுகள்">2-3 years</option>
+          <option data-en="3-5 years" data-ta="3-5 ஆண்டுகள்">3-5 years</option>
+          <option data-en="5+ years" data-ta="5+ ஆண்டுகள்">5+ years</option>
         </select>
         <button class="exp-add-btn" onclick="addExperience()" title="Add">+</button>
       </div>
     </div>
-    <div class="field"><label class="field-label">Current situation <span class="req">*</span></label><div class="chip-grid" id="situationChips"><div class="chip" onclick="chipSingle(this,'situationChips')">Student</div><div class="chip" onclick="chipSingle(this,'situationChips')">Working full-time</div><div class="chip" onclick="chipSingle(this,'situationChips')">Working part-time</div><div class="chip" onclick="chipSingle(this,'situationChips')">Between jobs</div><div class="chip" onclick="chipSingle(this,'situationChips')">Freelancing / daily wage</div><div class="chip" onclick="chipSingle(this,'situationChips')">Homemaker</div></div></div>
-    <div class="field"><label class="field-label">Current monthly income</label><select class="field-input" id="fincome"><option value="" disabled selected>Select range</option><option>No income currently</option><option>Below ₹8,000</option><option>₹8,000 - ₹15,000</option><option>₹15,000 - ₹25,000</option><option>₹25,000 - ₹40,000</option><option>Above ₹40,000</option></select></div>
-    <div class="field"><label class="field-label">Languages</label><div class="chip-grid" id="langChips"><div class="chip" onclick="chipToggle(this)">Tamil</div><div class="chip" onclick="chipToggle(this)">Hindi</div><div class="chip" onclick="chipToggle(this)">English</div><div class="chip" onclick="chipToggle(this)">Telugu</div><div class="chip" onclick="chipToggle(this)">Kannada</div><div class="chip" onclick="chipToggle(this)">Malayalam</div></div></div>
-    <div class="field"><label class="field-label">Which days? <span class="req">*</span></label><div class="chip-grid" id="dayChips"><div class="chip" onclick="chipToggle(this)">Mon</div><div class="chip" onclick="chipToggle(this)">Tue</div><div class="chip" onclick="chipToggle(this)">Wed</div><div class="chip" onclick="chipToggle(this)">Thu</div><div class="chip" onclick="chipToggle(this)">Fri</div><div class="chip" onclick="chipToggle(this)">Sat</div><div class="chip" onclick="chipToggle(this)">Sun</div></div><div class="hint">Weekends = more shifts</div></div>
-    <div class="field"><label class="field-label">Preferred timing <span class="req">*</span></label>
-      <div class="time-grid" id="timeSlots">
-        <div class="time-slot" onclick="timeToggle(this)">6:00 – 9:00 AM<div class="time-slot-label">Early Morning</div></div>
-        <div class="time-slot" onclick="timeToggle(this)">9:00 AM – 12:00 PM<div class="time-slot-label">Morning</div></div>
-        <div class="time-slot" onclick="timeToggle(this)">12:00 – 3:00 PM<div class="time-slot-label">Afternoon</div></div>
-        <div class="time-slot" onclick="timeToggle(this)">3:00 – 6:00 PM<div class="time-slot-label">Late Afternoon</div></div>
-        <div class="time-slot" onclick="timeToggle(this)">6:00 – 9:00 PM<div class="time-slot-label">Evening</div></div>
-        <div class="time-slot" onclick="timeToggle(this)">9:00 PM – 12:00 AM<div class="time-slot-label">Night</div></div>
-        <div class="time-slot" onclick="timeToggle(this)">12:00 – 2:00 AM<div class="time-slot-label">Late Night</div></div>
+
+    <div class="field">
+      <label class="field-label" data-en="Current situation *" data-ta="தற்போதைய நிலை *">Current situation <span class="req">*</span></label>
+      <div class="chip-grid" id="situationChips">
+        <div class="chip" data-en="Student" data-ta="மாணவர்" onclick="chipSingle(this,'situationChips')">Student</div>
+        <div class="chip" data-en="Working full-time" data-ta="முழுநேர வேலை" onclick="chipSingle(this,'situationChips')">Working full-time</div>
+        <div class="chip" data-en="Working part-time" data-ta="பகுதிநேர வேலை" onclick="chipSingle(this,'situationChips')">Working part-time</div>
+        <div class="chip" data-en="Between jobs" data-ta="வேலை தேடுகிறேன்" onclick="chipSingle(this,'situationChips')">Between jobs</div>
+        <div class="chip" data-en="Freelancing / daily wage" data-ta="தினசரி கூலி வேலை" onclick="chipSingle(this,'situationChips')">Freelancing / daily wage</div>
+        <div class="chip" data-en="Homemaker" data-ta="இல்லத்தரசி" onclick="chipSingle(this,'situationChips')">Homemaker</div>
       </div>
-      <div class="hint">Select all slots you're available for</div>
     </div>
-    <div class="field"><label class="field-label">Hours per week</label><div class="range-wrap"><div class="range-top"><span class="range-val" id="hrsVal">20</span><span class="range-unit">hrs / week</span></div><input type="range" min="4" max="48" value="20" id="hrsRange" oninput="document.getElementById('hrsVal').textContent=this.value"></div></div>
-    <div class="field"><label class="field-label">Can you start?</label><div class="toggle-row"><div class="toggle-opt" onclick="toggleSelect(this,'start')">This week</div><div class="toggle-opt" onclick="toggleSelect(this,'start')">Next week</div><div class="toggle-opt" onclick="toggleSelect(this,'start')">In 2+ weeks</div></div></div>
-    <div class="btn-row"><button class="btn btn-ghost" onclick="goStep(2)">← Back</button><button class="btn btn-primary" onclick="goStep(4)">Next →</button></div>
+
+    <div class="field">
+      <label class="field-label" data-en="Current monthly income" data-ta="தற்போதைய மாத வருமானம்">Current monthly income</label>
+      <select class="field-input" id="fincome">
+        <option value="" disabled selected data-en="Select range" data-ta="தேர்வு செய்யவும்">Select range</option>
+        <option data-en="No income currently" data-ta="தற்போது வருமானம் இல்லை">No income currently</option>
+        <option data-en="Below ₹8,000" data-ta="₹8,000-க்கு கீழே">Below ₹8,000</option>
+        <option data-en="₹8,000 - ₹15,000" data-ta="₹8,000 - ₹15,000">₹8,000 - ₹15,000</option>
+        <option data-en="₹15,000 - ₹25,000" data-ta="₹15,000 - ₹25,000">₹15,000 - ₹25,000</option>
+        <option data-en="₹25,000 - ₹40,000" data-ta="₹25,000 - ₹40,000">₹25,000 - ₹40,000</option>
+        <option data-en="Above ₹40,000" data-ta="₹40,000-க்கு மேல்">Above ₹40,000</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label class="field-label" data-en="Languages" data-ta="மொழிகள்">Languages</label>
+      <div class="chip-grid" id="langChips">
+        <div class="chip" onclick="chipToggle(this)">Tamil</div>
+        <div class="chip" onclick="chipToggle(this)">Hindi</div>
+        <div class="chip" onclick="chipToggle(this)">English</div>
+        <div class="chip" onclick="chipToggle(this)">Telugu</div>
+        <div class="chip" onclick="chipToggle(this)">Kannada</div>
+        <div class="chip" onclick="chipToggle(this)">Malayalam</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label" data-en="Which days? *" data-ta="எந்த நாட்களில்? *">Which days? <span class="req">*</span></label>
+      <div class="chip-grid" id="dayChips">
+        <div class="chip" data-en="Mon" data-ta="திங்கள்" onclick="chipToggle(this)">Mon</div>
+        <div class="chip" data-en="Tue" data-ta="செவ்வாய்" onclick="chipToggle(this)">Tue</div>
+        <div class="chip" data-en="Wed" data-ta="புதன்" onclick="chipToggle(this)">Wed</div>
+        <div class="chip" data-en="Thu" data-ta="வியாழன்" onclick="chipToggle(this)">Thu</div>
+        <div class="chip" data-en="Fri" data-ta="வெள்ளி" onclick="chipToggle(this)">Fri</div>
+        <div class="chip" data-en="Sat" data-ta="சனி" onclick="chipToggle(this)">Sat</div>
+        <div class="chip" data-en="Sun" data-ta="ஞாயிறு" onclick="chipToggle(this)">Sun</div>
+      </div>
+      <div class="hint" data-en="Weekends = more shifts" data-ta="வார இறுதி = அதிக ஷிப்ட்கள்">Weekends = more shifts</div>
+    </div>
+
+    <div class="field">
+      <label class="field-label" data-en="Preferred timing *" data-ta="விரும்பிய நேரம் *">Preferred timing <span class="req">*</span></label>
+      <div class="time-grid" id="timeSlots">
+        <div class="time-slot" onclick="timeToggle(this)">6:00 – 9:00 AM<div class="time-slot-label" data-en="Early Morning" data-ta="அதிகாலை">Early Morning</div></div>
+        <div class="time-slot" onclick="timeToggle(this)">9:00 AM – 12:00 PM<div class="time-slot-label" data-en="Morning" data-ta="காலை">Morning</div></div>
+        <div class="time-slot" onclick="timeToggle(this)">12:00 – 3:00 PM<div class="time-slot-label" data-en="Afternoon" data-ta="மதியம்">Afternoon</div></div>
+        <div class="time-slot" onclick="timeToggle(this)">3:00 – 6:00 PM<div class="time-slot-label" data-en="Late Afternoon" data-ta="பிற்பகல்">Late Afternoon</div></div>
+        <div class="time-slot" onclick="timeToggle(this)">6:00 – 9:00 PM<div class="time-slot-label" data-en="Evening" data-ta="மாலை">Evening</div></div>
+        <div class="time-slot" onclick="timeToggle(this)">9:00 PM – 12:00 AM<div class="time-slot-label" data-en="Night" data-ta="இரவு">Night</div></div>
+        <div class="time-slot" onclick="timeToggle(this)">12:00 – 2:00 AM<div class="time-slot-label" data-en="Late Night" data-ta="நள்ளிரவு">Late Night</div></div>
+      </div>
+      <div class="hint" data-en="Select all slots you're available for" data-ta="நீங்கள் கிடைக்கும் அனைத்து நேர பிரிவுகளை தேர்வு செய்யவும்">Select all slots you're available for</div>
+    </div>
+
+    <div class="field">
+      <label class="field-label" data-en="Hours per week" data-ta="வாரத்தில் மணி நேரம்">Hours per week</label>
+      <div class="range-wrap">
+        <div class="range-top">
+          <span class="range-val" id="hrsVal">20</span>
+          <span class="range-unit" data-en="hrs / week" data-ta="மணி / வாரம்">hrs / week</span>
+        </div>
+        <input type="range" min="4" max="48" value="20" id="hrsRange" oninput="document.getElementById('hrsVal').textContent=this.value">
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label" data-en="Can you start?" data-ta="எப்போது தொடங்கலாம்?">Can you start?</label>
+      <div class="toggle-row">
+        <div class="toggle-opt" data-en="This week" data-ta="இந்த வாரம்" onclick="toggleSelect(this,'start')">This week</div>
+        <div class="toggle-opt" data-en="Next week" data-ta="அடுத்த வாரம்" onclick="toggleSelect(this,'start')">Next week</div>
+        <div class="toggle-opt" data-en="In 2+ weeks" data-ta="2+ வாரங்களில்" onclick="toggleSelect(this,'start')">In 2+ weeks</div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-ghost" data-en="← Back" data-ta="← திரும்பு" onclick="goStep(2)">← Back</button>
+      <button class="btn btn-primary" data-en="Next →" data-ta="அடுத்து →" onclick="goStep(4)">Next →</button>
+    </div>
   </div>
 
   <!-- ═══ STEP 4 ═══ -->
   <div class="step" id="step4">
-    <div class="step-label">Step 4 of 4</div>
-    <div class="step-title">Last step</div>
-    <div class="field"><label class="field-label">What matters most to you? <span class="req">*</span></label><div class="chip-grid" id="motivChips"><div class="chip" onclick="chipToggle(this)">Extra income on the side</div><div class="chip" onclick="chipToggle(this)">Flexible — work when I want</div><div class="chip" onclick="chipToggle(this)">Guaranteed pay per shift</div><div class="chip" onclick="chipToggle(this)">Work near my home</div><div class="chip" onclick="chipToggle(this)">No contractor / agent cuts</div><div class="chip" onclick="chipToggle(this)">Learn a new skill</div><div class="chip" onclick="chipToggle(this)">Better than current job</div></div><div class="hint">Select up to 3</div></div>
-    <div class="field"><label class="field-label">Aadhaar card?</label><div class="toggle-row"><div class="toggle-opt selected" onclick="toggleSelect(this,'aadhaar')">Yes</div><div class="toggle-opt" onclick="toggleSelect(this,'aadhaar')">No</div></div></div>
-    <div class="field"><label class="field-label">Transport</label><div class="chip-grid" id="transportChips"><div class="chip" onclick="chipSingle(this,'transportChips')">Two-wheeler</div><div class="chip" onclick="chipSingle(this,'transportChips')">Bicycle</div><div class="chip" onclick="chipSingle(this,'transportChips')">Public transport</div><div class="chip" onclick="chipSingle(this,'transportChips')">Walking distance</div></div></div>
-    <div class="btn-row"><button class="btn btn-ghost" onclick="goStep(3)">← Back</button><button class="btn btn-primary" onclick="submitForm()" id="submitBtn">Join Instaff ✓</button></div>
+    <div class="step-label" data-en="Step 4 of 4" data-ta="படி 4 / 4">Step 4 of 4</div>
+    <div class="step-title" data-en="Last step" data-ta="கடைசி படி">Last step</div>
+
+    <div class="field">
+      <label class="field-label" data-en="What matters most to you? *" data-ta="உங்களுக்கு என்ன முக்கியம்? *">What matters most to you? <span class="req">*</span></label>
+      <div class="chip-grid" id="motivChips">
+        <div class="chip" data-en="Extra income on the side" data-ta="கூடுதல் வருமானம்" onclick="chipToggle(this)">Extra income on the side</div>
+        <div class="chip" data-en="Flexible — work when I want" data-ta="நான் விரும்பும்போது வேலை" onclick="chipToggle(this)">Flexible — work when I want</div>
+        <div class="chip" data-en="Guaranteed pay per shift" data-ta="ஷிப்டுக்கு உறுதியான ஊதியம்" onclick="chipToggle(this)">Guaranteed pay per shift</div>
+        <div class="chip" data-en="Work near my home" data-ta="வீட்டிற்கு அருகில் வேலை" onclick="chipToggle(this)">Work near my home</div>
+        <div class="chip" data-en="No contractor / agent cuts" data-ta="தரகர் கமிஷன் இல்லை" onclick="chipToggle(this)">No contractor / agent cuts</div>
+        <div class="chip" data-en="Learn a new skill" data-ta="புதிய திறன் கற்க" onclick="chipToggle(this)">Learn a new skill</div>
+        <div class="chip" data-en="Better than current job" data-ta="தற்போதைய வேலையை விட சிறந்தது" onclick="chipToggle(this)">Better than current job</div>
+      </div>
+      <div class="hint" data-en="Select up to 3" data-ta="அதிகபட்சம் 3 தேர்வு செய்யவும்">Select up to 3</div>
+    </div>
+
+    <div class="field">
+      <label class="field-label" data-en="Aadhaar card?" data-ta="ஆதார் அட்டை இருக்கிறதா?">Aadhaar card?</label>
+      <div class="toggle-row">
+        <div class="toggle-opt selected" data-en="Yes" data-ta="ஆம்" onclick="toggleSelect(this,'aadhaar')">Yes</div>
+        <div class="toggle-opt" data-en="No" data-ta="இல்லை" onclick="toggleSelect(this,'aadhaar')">No</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label" data-en="Transport" data-ta="போக்குவரத்து">Transport</label>
+      <div class="chip-grid" id="transportChips">
+        <div class="chip" data-en="Two-wheeler" data-ta="இரு சக்கர வாகனம்" onclick="chipSingle(this,'transportChips')">Two-wheeler</div>
+        <div class="chip" data-en="Bicycle" data-ta="சைக்கிள்" onclick="chipSingle(this,'transportChips')">Bicycle</div>
+        <div class="chip" data-en="Public transport" data-ta="பொது போக்குவரத்து" onclick="chipSingle(this,'transportChips')">Public transport</div>
+        <div class="chip" data-en="Walking distance" data-ta="நடந்து செல்லும் தூரம்" onclick="chipSingle(this,'transportChips')">Walking distance</div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-ghost" data-en="← Back" data-ta="← திரும்பு" onclick="goStep(3)">← Back</button>
+      <button class="btn btn-primary" data-en="Join Instaff ✓" data-ta="Instaff-ல் இணையுங்கள் ✓" onclick="submitForm()" id="submitBtn">Join Instaff ✓</button>
+    </div>
   </div>
 
   <!-- ═══ SUCCESS ═══ -->
   <div class="success-screen" id="successScreen">
     <div class="success-icon">🎉</div>
-    <div class="success-title">Welcome to Instaff!</div>
-    <div class="success-sub">You're registered. We'll send your first shift opportunity on WhatsApp within 24 hours.</div>
+    <div class="success-title" data-en="Welcome to Instaff!" data-ta="Instaff-ல் வரவேற்கிறோம்!">Welcome to Instaff!</div>
+    <div class="success-sub" data-en="You're registered. We'll send your first shift opportunity on WhatsApp within 24 hours." data-ta="நீங்கள் பதிவு செய்யப்பட்டீர்கள். 24 மணி நேரத்தில் WhatsApp-ல் முதல் ஷிப்ட் வாய்ப்பை அனுப்புவோம்.">You're registered. We'll send your first shift opportunity on WhatsApp within 24 hours.</div>
     <div class="success-id" id="leadId">IS-W-0001</div><br><br>
     <a href="https://wa.me/918610852323?text=Hi%20Instaff!%20I%20just%20signed%20up%20and%20I'm%20ready%20for%20shifts!" class="wa-btn" target="_blank">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.832-1.438A9.955 9.955 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18a8 8 0 01-4.243-1.214l-.252-.149-2.868.852.852-2.868-.168-.268A8 8 0 1112 20z"/></svg>
-      Message us on WhatsApp
+      <span data-en="Message us on WhatsApp" data-ta="WhatsApp-ல் தொடர்பு கொள்ளுங்கள்">Message us on WhatsApp</span>
     </a>
   </div>
 </div>
 
 <script>
 const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwxVgo0htc530DUloSeTwFTqFywlFpDOcm2BvmhX1qAKyNrwz_kA-ZfjH243-3jsgdaSg/exec';
+
+// ── LANGUAGE ──
+let lang = 'en';
+
+function setLang(l) {
+  lang = l;
+  document.body.classList.toggle('ta', l === 'ta');
+  document.getElementById('btn-en').classList.toggle('active', l === 'en');
+  document.getElementById('btn-ta').classList.toggle('active', l === 'ta');
+
+  // Update all translatable elements
+  document.querySelectorAll('[data-en]').forEach(el => {
+    const txt = el.getAttribute('data-' + l);
+    if (!txt) return;
+    // Don't overwrite elements that have child nodes (like .req spans)
+    if (el.children.length === 0) {
+      el.textContent = txt;
+    } else if (el.classList.contains('field-label')) {
+      // field-label: update only the text node, keep the .req span
+      const req = el.querySelector('.req');
+      el.childNodes[0].textContent = txt.replace(' *','') + ' ';
+    }
+  });
+
+  // Update placeholders
+  document.querySelectorAll('[data-ph-' + l + ']').forEach(el => {
+    el.placeholder = el.getAttribute('data-ph-' + l);
+  });
+
+  // Update cluster counts text
+  updateClusterCount('kitchen');
+  updateClusterCount('foh');
+  updateClusterCount('facility');
+  updateClusterCount('trades');
+}
+
+// ── NAV ──
 let currentStep = 1;
 
 function goStep(n) {
@@ -319,24 +520,56 @@ function updateProgress() {
 }
 
 function validateStep(step) {
+  const err = lang === 'ta' ? {
+    name: 'உங்கள் பெயர் உள்ளிடவும்',
+    phone: 'சரியான தொலைபேசி எண் உள்ளிடவும்',
+    age: 'வயதை தேர்வு செய்யவும்',
+    pin: 'சரியான 6 இலக்க பின்கோடு உள்ளிடவும்',
+    role: 'ஒரு பணியையாவது தேர்வு செய்யவும்',
+    edu: 'கல்வி தகுதியை தேர்வு செய்யவும்',
+    sit: 'தற்போதைய நிலையை தேர்வு செய்யவும்',
+    day: 'ஒரு நாளையாவது தேர்வு செய்யவும்',
+    time: 'ஒரு நேர பிரிவையாவது தேர்வு செய்யவும்',
+    motiv: 'உங்களுக்கு முக்கியமானதை தேர்வு செய்யவும்',
+    expRole: 'பணி பெயர் உள்ளிடவும்',
+    expWork: 'பணியிட பெயர் உள்ளிடவும்',
+    expPer: 'காலத்தை தேர்வு செய்யவும்',
+    max3: 'அதிகபட்சம் 3'
+  } : {
+    name: 'Enter your name',
+    phone: 'Enter a valid 10-digit number',
+    age: 'Select your age range',
+    pin: 'Enter a valid 6-digit pincode',
+    role: 'Select at least one role',
+    edu: 'Select your education',
+    sit: 'Select your current situation',
+    day: 'Select at least one day',
+    time: 'Select at least one time slot',
+    motiv: 'Select what matters to you',
+    expRole: 'Enter role name',
+    expWork: 'Enter workplace name',
+    expPer: 'Select a period',
+    max3: 'Maximum 3'
+  };
+
   if (step === 1) {
     if (!v('fname')) { shake('fname'); return false }
-    if (document.getElementById('fphone').value.replace(/\s/g, '').length < 10) { shake('fphone'); return false }
-    if (!document.querySelector('[onclick*="\'age\'"].selected')) { flash('Select your age range'); return false }
+    if (document.getElementById('fphone').value.replace(/\s/g,'').length < 10) { shake('fphone'); return false }
+    if (!document.querySelector('[onclick*="\'age\'"].selected')) { flash(err.age); return false }
     const pin = document.getElementById('fpincode').value.trim();
     if (pin.length !== 6 || !/^\d{6}$/.test(pin)) { shake('fpincode'); return false }
   }
   if (step === 2) {
-    if (document.querySelectorAll('.role-chip.selected').length === 0) { flash('Select at least one role'); return false }
+    if (document.querySelectorAll('.role-chip.selected').length === 0) { flash(err.role); return false }
   }
   if (step === 3) {
-    if (!document.querySelector('[onclick*="\'edu\'"].selected')) { flash('Select your education'); return false }
-    if (document.querySelectorAll('#situationChips .chip.selected').length === 0) { flash('Select your current situation'); return false }
-    if (document.querySelectorAll('#dayChips .chip.selected').length === 0) { flash('Select at least one day'); return false }
-    if (document.querySelectorAll('#timeSlots .time-slot.selected').length === 0) { flash('Select at least one time slot'); return false }
+    if (!document.querySelector('[onclick*="\'edu\'"].selected')) { flash(err.edu); return false }
+    if (document.querySelectorAll('#situationChips .chip.selected').length === 0) { flash(err.sit); return false }
+    if (document.querySelectorAll('#dayChips .chip.selected').length === 0) { flash(err.day); return false }
+    if (document.querySelectorAll('#timeSlots .time-slot.selected').length === 0) { flash(err.time); return false }
   }
   if (step === 4) {
-    if (document.querySelectorAll('#motivChips .chip.selected').length === 0) { flash('Select what matters to you'); return false }
+    if (document.querySelectorAll('#motivChips .chip.selected').length === 0) { flash(err.motiv); return false }
   }
   return true;
 }
@@ -362,7 +595,8 @@ function toggleSelect(el, group) {
 }
 function chipToggle(el) {
   const p = el.parentElement;
-  if (p.id === 'motivChips' && !el.classList.contains('selected') && p.querySelectorAll('.selected').length >= 3) { flash('Maximum 3'); return }
+  const maxMsg = lang === 'ta' ? 'அதிகபட்சம் 3' : 'Maximum 3';
+  if (p.id === 'motivChips' && !el.classList.contains('selected') && p.querySelectorAll('.selected').length >= 3) { flash(maxMsg); return }
   el.classList.toggle('selected');
 }
 function chipSingle(el, cid) {
@@ -373,26 +607,23 @@ function timeToggle(el) { el.classList.toggle('selected') }
 
 // ── WORK EXPERIENCE ──
 let workExperiences = [];
-
 function addExperience() {
   const role = document.getElementById('expRole').value.trim();
   const workplace = document.getElementById('expWorkplace').value.trim();
   const period = document.getElementById('expPeriod').value;
   if (!role) { shake('expRole'); return }
   if (!workplace) { shake('expWorkplace'); return }
-  if (!period) { flash('Select a period'); return }
+  if (!period) { flash(lang === 'ta' ? 'காலத்தை தேர்வு செய்யவும்' : 'Select a period'); return }
   workExperiences.push({ role, workplace, period });
   renderExperiences();
   document.getElementById('expRole').value = '';
   document.getElementById('expWorkplace').value = '';
   document.getElementById('expPeriod').selectedIndex = 0;
 }
-
 function removeExperience(idx) {
   workExperiences.splice(idx, 1);
   renderExperiences();
 }
-
 function renderExperiences() {
   const container = document.getElementById('expEntries');
   container.innerHTML = workExperiences.map((exp, i) =>
@@ -400,52 +631,52 @@ function renderExperiences() {
   ).join('');
 }
 
-// ── CLUSTER ROLE LOGIC ──
+// ── CLUSTER ROLES ──
 function roleChipToggle(el, cluster) {
   el.classList.toggle('selected');
   updateClusterCount(cluster);
 }
-
 function selectAllCluster(boxId, cluster) {
   const box = document.getElementById(boxId);
   const chips = box.querySelectorAll('.role-chip');
   const allSelected = [...chips].every(c => c.classList.contains('selected'));
-  chips.forEach(c => {
-    if (allSelected) c.classList.remove('selected');
-    else c.classList.add('selected');
-  });
-  const btn = box.querySelector('.cluster-all');
-  btn.textContent = allSelected ? 'Select all' : 'Deselect all';
+  chips.forEach(c => allSelected ? c.classList.remove('selected') : c.classList.add('selected'));
   updateClusterCount(cluster);
 }
-
 function updateClusterCount(cluster) {
   const box = document.getElementById('cluster-' + cluster);
+  if (!box) return;
   const count = box.querySelectorAll('.role-chip.selected').length;
   const total = box.querySelectorAll('.role-chip').length;
-  document.getElementById('count-' + cluster).textContent = count > 0 ? count + ' of ' + total : '0 selected';
+  const countEl = document.getElementById('count-' + cluster);
   const btn = box.querySelector('.cluster-all');
-  btn.textContent = count === total ? 'Deselect all' : 'Select all';
+  if (lang === 'ta') {
+    countEl.textContent = count > 0 ? count + ' / ' + total + ' தேர்வு' : '0 தேர்வு';
+    btn.textContent = count === total ? 'தேர்வு நீக்கு' : 'அனைத்தும் தேர்வு';
+  } else {
+    countEl.textContent = count > 0 ? count + ' of ' + total : '0 selected';
+    btn.textContent = count === total ? 'Deselect all' : 'Select all';
+  }
 }
 
 function getToggleText(group) {
   const all = document.querySelectorAll('.toggle-opt');
   for (const el of all) {
-    if (el.getAttribute('onclick')?.includes("'" + group + "'") && el.classList.contains('selected')) return el.textContent.trim();
+    if (el.getAttribute('onclick')?.includes("'" + group + "'") && el.classList.contains('selected')) {
+      return el.getAttribute('data-en') || el.textContent.trim();
+    }
   }
   return '';
 }
 function getChipTexts(cid) {
-  return [...document.querySelectorAll('#' + cid + ' .chip.selected')].map(c => c.textContent.trim()).join(', ');
+  return [...document.querySelectorAll('#' + cid + ' .chip.selected')].map(c => c.getAttribute('data-en') || c.textContent.trim()).join(', ');
 }
 
 async function submitForm() {
   if (!validateStep(4)) return;
   const btn = document.getElementById('submitBtn');
   btn.classList.add('btn-loading'); btn.disabled = true;
-
-  const leadId = 'IS-W-' + new Date().toISOString().slice(5, 10).replace('-', '') + '-' + String(Math.floor(Math.random() * 9999)).padStart(4, '0');
-
+  const leadId = 'IS-W-' + new Date().toISOString().slice(5,10).replace('-','') + '-' + String(Math.floor(Math.random()*9999)).padStart(4,'0');
   const data = {
     timestamp: new Date().toISOString(),
     name: document.getElementById('fname').value.trim(),
@@ -454,7 +685,7 @@ async function submitForm() {
     age: getToggleText('age'),
     gender: getToggleText('gender'),
     pincode: document.getElementById('fpincode').value.trim(),
-    roles: [...document.querySelectorAll('.role-chip.selected')].map(r => r.textContent.trim()).join(', '),
+    roles: [...document.querySelectorAll('.role-chip.selected')].map(r => r.getAttribute('data-en') || r.textContent.trim()).join(', '),
     education: getToggleText('edu'),
     workExperience: workExperiences.map(e => e.role + ' at ' + e.workplace + ' (' + e.period + ')').join(' | '),
     situation: getChipTexts('situationChips'),
@@ -467,14 +698,13 @@ async function submitForm() {
     motivation: getChipTexts('motivChips'),
     aadhaar: getToggleText('aadhaar'),
     transport: getChipTexts('transportChips'),
+    formLanguage: lang,
     leadId: leadId
   };
-
   if (GOOGLE_SCRIPT_URL) {
-    try { await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }); } catch (e) { console.error(e); }
+    try { await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: {'Content-Type':'application/json'}, body: JSON.stringify(data) }); } catch(e) { console.error(e); }
   }
-  console.log('WORKER LEAD:', JSON.stringify(data, null, 2));
-
+  console.log('LEAD:', JSON.stringify(data, null, 2));
   setTimeout(() => {
     document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
     document.getElementById('progressBar').style.display = 'none';
