@@ -151,9 +151,10 @@
     <div class="step-desc">Takes 2 minutes. No documents needed right now.</div>
     <div class="field"><label class="field-label">Full Name <span class="req">*</span></label><input type="text" class="field-input" id="fname" placeholder="Your name" autocomplete="name"></div>
     <div class="field"><label class="field-label">Phone (WhatsApp) <span class="req">*</span></label><div class="phone-row"><input type="text" class="field-input phone-prefix" value="+91" readonly><input type="tel" class="field-input" id="fphone" placeholder="98765 43210" maxlength="12" autocomplete="tel"></div><div class="hint">We'll send shift alerts on WhatsApp</div></div>
+    <div class="field"><label class="field-label">Email ID</label><input type="email" class="field-input" id="femail" placeholder="yourname@email.com" autocomplete="email"></div>
     <div class="field"><label class="field-label">Age <span class="req">*</span></label><div class="toggle-row"><div class="toggle-opt" onclick="toggleSelect(this,'age')">18-21</div><div class="toggle-opt" onclick="toggleSelect(this,'age')">22-25</div><div class="toggle-opt" onclick="toggleSelect(this,'age')">26-30</div><div class="toggle-opt" onclick="toggleSelect(this,'age')">31-35</div><div class="toggle-opt" onclick="toggleSelect(this,'age')">36+</div></div></div>
     <div class="field"><label class="field-label">Gender</label><div class="toggle-row"><div class="toggle-opt" onclick="toggleSelect(this,'gender')">Male</div><div class="toggle-opt" onclick="toggleSelect(this,'gender')">Female</div><div class="toggle-opt" onclick="toggleSelect(this,'gender')">Other</div></div></div>
-    <div class="field"><label class="field-label">Pincode <span class="req">*</span></label><input type="tel" class="field-input" id="fpincode" placeholder="e.g., 600017" maxlength="6"><div class="hint">We match you to shifts near your location</div></div>
+    <div class="field"><label class="field-label">Pincode (current accommodation) <span class="req">*</span></label><input type="tel" class="field-input" id="fpincode" placeholder="e.g., 600017" maxlength="6"><div class="hint">We match you to shifts near your location</div></div>
     <div class="btn-row"><button class="btn btn-primary" onclick="goStep(2)">Next →</button></div>
   </div>
 
@@ -235,9 +236,12 @@
       <label class="field-label">Work Experience</label>
       <div class="hint" style="margin-bottom:8px">Add your past or current roles. You can add multiple.</div>
       <div class="exp-entries" id="expEntries"></div>
-      <div class="exp-add-row">
-        <input type="text" class="field-input" id="expRole" placeholder="Role / workplace (e.g., Steward at Taj)">
-        <select class="field-input" id="expPeriod" style="width:130px;flex-shrink:0">
+      <div class="exp-add-row" style="flex-wrap:wrap">
+        <input type="text" class="field-input" id="expRole" placeholder="Role (e.g., Steward)" style="flex:1;min-width:120px">
+        <input type="text" class="field-input" id="expWorkplace" placeholder="Workplace (e.g., Taj Hotel)" style="flex:1;min-width:120px">
+      </div>
+      <div class="exp-add-row" style="margin-top:6px">
+        <select class="field-input" id="expPeriod">
           <option value="" disabled selected>Period</option>
           <option>< 3 months</option>
           <option>3-6 months</option>
@@ -372,12 +376,15 @@ let workExperiences = [];
 
 function addExperience() {
   const role = document.getElementById('expRole').value.trim();
+  const workplace = document.getElementById('expWorkplace').value.trim();
   const period = document.getElementById('expPeriod').value;
   if (!role) { shake('expRole'); return }
+  if (!workplace) { shake('expWorkplace'); return }
   if (!period) { flash('Select a period'); return }
-  workExperiences.push({ role, period });
+  workExperiences.push({ role, workplace, period });
   renderExperiences();
   document.getElementById('expRole').value = '';
+  document.getElementById('expWorkplace').value = '';
   document.getElementById('expPeriod').selectedIndex = 0;
 }
 
@@ -389,7 +396,7 @@ function removeExperience(idx) {
 function renderExperiences() {
   const container = document.getElementById('expEntries');
   container.innerHTML = workExperiences.map((exp, i) =>
-    '<div class="exp-entry"><div class="exp-entry-info"><div class="exp-entry-role">' + exp.role + '</div><div class="exp-entry-period">' + exp.period + '</div></div><button class="exp-remove" onclick="removeExperience(' + i + ')">×</button></div>'
+    '<div class="exp-entry"><div class="exp-entry-info"><div class="exp-entry-role">' + exp.role + ' — ' + exp.workplace + '</div><div class="exp-entry-period">' + exp.period + '</div></div><button class="exp-remove" onclick="removeExperience(' + i + ')">×</button></div>'
   ).join('');
 }
 
@@ -443,12 +450,13 @@ async function submitForm() {
     timestamp: new Date().toISOString(),
     name: document.getElementById('fname').value.trim(),
     phone: '+91' + document.getElementById('fphone').value.trim(),
+    email: document.getElementById('femail').value.trim(),
     age: getToggleText('age'),
     gender: getToggleText('gender'),
     pincode: document.getElementById('fpincode').value.trim(),
     roles: [...document.querySelectorAll('.role-chip.selected')].map(r => r.textContent.trim()).join(', '),
     education: getToggleText('edu'),
-    workExperience: workExperiences.map(e => e.role + ' (' + e.period + ')').join(' | '),
+    workExperience: workExperiences.map(e => e.role + ' at ' + e.workplace + ' (' + e.period + ')').join(' | '),
     situation: getChipTexts('situationChips'),
     income: document.getElementById('fincome').value || '',
     languages: getChipTexts('langChips'),
