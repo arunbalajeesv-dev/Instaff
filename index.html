@@ -328,15 +328,25 @@
     </div>
 
     <div class="field">
+      <label class="field-label" data-en="Looking for *" data-ta="எதற்காக பார்க்கிறீர்கள் *">Looking for <span class="req">*</span></label>
+      <div class="toggle-row">
+        <div class="toggle-opt" data-en="Part-time" data-ta="பகுதி நேரம்" onclick="toggleSelect(this,'worktype')">Part-time</div>
+        <div class="toggle-opt" data-en="Full-time" data-ta="முழு நேரம்" onclick="toggleSelect(this,'worktype')">Full-time</div>
+        <div class="toggle-opt" data-en="Either" data-ta="ஏதேனும்" onclick="toggleSelect(this,'worktype')">Either</div>
+      </div>
+    </div>
+
+    <div class="field">
       <label class="field-label" data-en="Current monthly income" data-ta="தற்போதைய மாத வருமானம்">Current monthly income</label>
       <select class="field-input" id="fincome">
         <option value="" disabled selected data-en="Select range" data-ta="தேர்வு செய்யவும்">Select range</option>
         <option data-en="No income currently" data-ta="தற்போது வருமானம் இல்லை">No income currently</option>
-        <option data-en="Below ₹8,000" data-ta="₹8,000-க்கு கீழே">Below ₹8,000</option>
-        <option data-en="₹8,000 - ₹15,000" data-ta="₹8,000 - ₹15,000">₹8,000 - ₹15,000</option>
-        <option data-en="₹15,000 - ₹25,000" data-ta="₹15,000 - ₹25,000">₹15,000 - ₹25,000</option>
-        <option data-en="₹25,000 - ₹40,000" data-ta="₹25,000 - ₹40,000">₹25,000 - ₹40,000</option>
-        <option data-en="Above ₹40,000" data-ta="₹40,000-க்கு மேல்">Above ₹40,000</option>
+        <option data-en="₹5,000 - ₹10,000" data-ta="₹5,000 - ₹10,000">₹5,000 - ₹10,000</option>
+        <option data-en="₹10,000 - ₹15,000" data-ta="₹10,000 - ₹15,000">₹10,000 - ₹15,000</option>
+        <option data-en="₹15,000 - ₹20,000" data-ta="₹15,000 - ₹20,000">₹15,000 - ₹20,000</option>
+        <option data-en="₹20,000 - ₹25,000" data-ta="₹20,000 - ₹25,000">₹20,000 - ₹25,000</option>
+        <option data-en="₹25,000 - ₹30,000" data-ta="₹25,000 - ₹30,000">₹25,000 - ₹30,000</option>
+        <option data-en="Above ₹30,000" data-ta="₹30,000-க்கு மேல்">Above ₹30,000</option>
       </select>
     </div>
 
@@ -367,7 +377,7 @@
     </div>
 
     <div class="field">
-      <label class="field-label" data-en="Preferred timing *" data-ta="விரும்பிய நேரம் *">Preferred timing <span class="req">*</span></label>
+      <label class="field-label" data-en="Preferred timing — select exactly 3 *" data-ta="விரும்பிய நேரம் — சரியாக 3 தேர்வு செய்யவும் *">Preferred timing — select exactly 3 <span class="req">*</span></label>
       <div class="time-grid" id="timeSlots">
         <div class="time-slot" onclick="timeToggle(this)">6:00 – 9:00 AM<div class="time-slot-label" data-en="Early Morning" data-ta="அதிகாலை">Early Morning</div></div>
         <div class="time-slot" onclick="timeToggle(this)">9:00 AM – 12:00 PM<div class="time-slot-label" data-en="Morning" data-ta="காலை">Morning</div></div>
@@ -377,7 +387,7 @@
         <div class="time-slot" onclick="timeToggle(this)">9:00 PM – 12:00 AM<div class="time-slot-label" data-en="Night" data-ta="இரவு">Night</div></div>
         <div class="time-slot" onclick="timeToggle(this)">12:00 – 2:00 AM<div class="time-slot-label" data-en="Late Night" data-ta="நள்ளிரவு">Late Night</div></div>
       </div>
-      <div class="hint" data-en="Select all slots you're available for" data-ta="நீங்கள் கிடைக்கும் அனைத்து நேர பிரிவுகளை தேர்வு செய்யவும்">Select all slots you're available for</div>
+      <div class="hint" id="timeSlotHint" data-en="0 of 3 selected" data-ta="0 / 3 தேர்வு செய்யப்பட்டது">0 of 3 selected</div>
     </div>
 
     <div class="field">
@@ -498,6 +508,9 @@ function setLang(l) {
   updateClusterCount('foh');
   updateClusterCount('facility');
   updateClusterCount('trades');
+
+  // Refresh live time-slot counter (generic loop above would reset it to "0 of 3")
+  updateTimeSlotHint();
 }
 
 // ── NAV ──
@@ -534,6 +547,8 @@ function validateStep(step) {
     expRole: 'பணி பெயர் உள்ளிடவும்',
     expWork: 'பணியிட பெயர் உள்ளிடவும்',
     expPer: 'காலத்தை தேர்வு செய்யவும்',
+    worktype: 'பகுதி நேரம், முழு நேரம் அல்லது ஏதேனும் தேர்வு செய்யவும்',
+    salary: 'எதிர்பார்க்கும் ஊதிய வரம்பை தேர்வு செய்யவும்',
     max3: 'அதிகபட்சம் 3'
   } : {
     name: 'Enter your name',
@@ -544,7 +559,9 @@ function validateStep(step) {
     edu: 'Select your education',
     sit: 'Select your current situation',
     day: 'Select at least one day',
-    time: 'Select at least one time slot',
+    time: 'Select exactly 3 time slots',
+    worktype: 'Select part-time, full-time, or either',
+    salary: 'Select your expected salary range',
     motiv: 'Select what matters to you',
     expRole: 'Enter role name',
     expWork: 'Enter workplace name',
@@ -565,8 +582,9 @@ function validateStep(step) {
   if (step === 3) {
     if (!document.querySelector('[onclick*="\'edu\'"].selected')) { flash(err.edu); return false }
     if (document.querySelectorAll('#situationChips .chip.selected').length === 0) { flash(err.sit); return false }
+    if (!document.querySelector('[onclick*="\'worktype\'"].selected')) { flash(err.worktype); return false }
     if (document.querySelectorAll('#dayChips .chip.selected').length === 0) { flash(err.day); return false }
-    if (document.querySelectorAll('#timeSlots .time-slot.selected').length === 0) { flash(err.time); return false }
+    if (document.querySelectorAll('#timeSlots .time-slot.selected').length !== 3) { flash(err.time); return false }
   }
   if (step === 4) {
     if (document.querySelectorAll('#motivChips .chip.selected').length === 0) { flash(err.motiv); return false }
@@ -603,7 +621,27 @@ function chipSingle(el, cid) {
   document.querySelectorAll('#' + cid + ' .chip').forEach(c => c.classList.remove('selected'));
   el.classList.add('selected');
 }
-function timeToggle(el) { el.classList.toggle('selected') }
+function timeToggle(el) {
+  const container = document.getElementById('timeSlots');
+  const selected = container.querySelectorAll('.time-slot.selected');
+  if (!el.classList.contains('selected') && selected.length >= 3) {
+    flash(lang === 'ta' ? 'அதிகபட்சம் 3 நேரங்கள் மட்டும்' : 'Select exactly 3 time slots');
+    return;
+  }
+  el.classList.toggle('selected');
+  updateTimeSlotHint();
+}
+
+function updateTimeSlotHint() {
+  const count = document.querySelectorAll('#timeSlots .time-slot.selected').length;
+  const hintEl = document.getElementById('timeSlotHint');
+  if (!hintEl) return;
+  if (lang === 'ta') {
+    hintEl.textContent = count + ' / 3 தேர்வு செய்யப்பட்டது';
+  } else {
+    hintEl.textContent = count + ' of 3 selected';
+  }
+}
 
 // ── WORK EXPERIENCE ──
 let workExperiences = [];
@@ -689,6 +727,7 @@ async function submitForm() {
     education: getToggleText('edu'),
     workExperience: workExperiences.map(e => e.role + ' at ' + e.workplace + ' (' + e.period + ')').join(' | '),
     situation: getChipTexts('situationChips'),
+    workType: getToggleText('worktype'),
     income: document.getElementById('fincome').value || '',
     languages: getChipTexts('langChips'),
     days: getChipTexts('dayChips'),
